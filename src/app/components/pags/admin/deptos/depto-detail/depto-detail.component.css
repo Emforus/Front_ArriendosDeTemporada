@@ -1,0 +1,92 @@
+.container {
+    width: 100%;
+    margin-top: 60px;
+}
+p {
+    margin: 20px 0 20px 20px;
+    color: #606060;
+    font-size: 18px;
+    line-height: 1.5em;
+}
+strong {
+    color: #00227b;
+    margin-right: 2px;
+}
+strong.child {
+    margin-left: 20px;
+    font-weight: 500;
+}
+mat-tab-group {
+    width: 90%;
+    max-width: initial;
+    font-size: 18px;
+    min-height: 400px;
+    padding: 0 5% 0 5%;
+    float: left;
+}
+mat-tab.label {
+    font-style: italic;
+    font-weight: bold;
+    color: #00227b;
+}
+p span {
+    float: right;
+    text-align: right;
+    clear: both;
+    max-width: 72%;
+}
+.fill-remaining-space {
+    flex: 1 1 auto;
+}
+button.enable {
+    background-color: #6f74dd;
+    color: #ffffff;
+}
+button.disable {
+    background-color: #00227b;
+    color: #ffffff;
+}
+button.delete {
+    background-color: #fd3939;
+    color: #ffffff;
+}
+button.disabled {
+    background-color: #606060;
+    color: #ffffff;
+}
+img {
+    max-height: inherit;
+    width: auto;
+    height: 100%;
+    align-self: center;
+}
+.imgcontainer {
+    min-height: 50vh;
+    height: 50vh;
+    margin-bottom: 30px;
+    background-color: #f0f0f0;
+}
+.imgbutton {
+    width: 50%;
+    height: inherit;
+    color: white;
+    background-color: #00C767;
+    border-width: 1px;
+    border-color: #007245;
+    border-radius: 10px;
+}
+.icon-container {
+    height: 50px;
+    width: 100px;
+    font-size: 12px;
+    clear: both;
+    text-align: center;
+}
+mat-tab-group {
+    width: 100%;
+    max-width: initial;
+    font-size: 18px;
+    min-height: 400px;
+    padding: 0 5% 0 5%;
+    float: left;
+}

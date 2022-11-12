@@ -1,0 +1,52 @@
+
+.mat-icon{
+    height: 25px !important;
+    width: 25px !important;
+    font-size: 25px !important;
+    color: white !important;
+    z-index: 99;
+}
+.profile{
+    border: solid;
+    background-color: #009961;
+    border-color: #007249;
+    padding: 0px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 20px;
+    width: 15%;
+    z-index: 99;
+}
+.admin{
+    border: solid;
+    background-color: #990000;
+    border-color: #720000;
+    padding: 0px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 20px;
+    width: 15%;
+    z-index: 99;
+}
+.login{
+    border: solid;
+    background-color: #009961;
+    border-color: #007249;
+    padding: 0px 10px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 20px;
+    width: 15%;
+    z-index: 99;
+}

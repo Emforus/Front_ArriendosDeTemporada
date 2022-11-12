@@ -1,0 +1,97 @@
+
+<div class="spacer">
+
+</div>
+<div class="container">
+  <mat-card class="title-box mt-elevation-z2">
+      <p class="title">Historial de reservas</p>
+  </mat-card>
+  <mat-card class="table-box mt-elevation-z2">
+    <div fxLayout="row" style="padding-bottom: 20px;" class="example-header" *ngIf="dialogOpen() && (loaderService.visibility | async)">
+        <mat-spinner style="margin: auto;" mode="indeterminate" [diameter]="100"></mat-spinner>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center" style="padding-bottom: 20px;" class="example-header" *ngIf="(facturas==null || facturas.length==0) && !(loaderService.visibility | async)">
+      <div class="spacer">
+
+      </div>
+      <span>¡Las reservas que realices apareceran aquí!</span>
+    </div>
+    
+    <ng-container *ngIf="pending!=null && !(loaderService.visibility | async)">
+      <mat-card class="title-box">
+          <p class="header">Reservas en curso</p>
+      </mat-card>
+      <ng-container *ngFor="let res of pending; index as i">
+        <div fxLayout="row" fxLayoutGap="1rem" class="latest-row">
+          <div fxFlex="20" fxLayoutAlign="center center">
+            <img [src]="'assets/img/deptos/'+res.departamento.fotografias[0]" class="img-fluid img-main img-thumbnail" alt=""/>
+          </div>
+          <div fxFlex>
+            <p>
+              <strong>Estado actual de la reserva</strong><span>{{res.estado}}</span><br/>
+              <br/>
+              <strong>Fecha de inicio</strong><span>{{formatDate(res.fechaHoraReserva)}}</span><br/>
+              <strong>Duración de la estadía</strong><span>{{res.duracion}} días</span><br/>
+              <br/>
+              <strong>Valor por día</strong><span>{{formatter.format(res.departamento.valorBase)}}</span><br/>
+              <strong>Valor IVA</strong><span>{{formatter.format(res.valorIVA)}}</span><br/>
+              <strong>Valor total de la reserva</strong><span>{{formatter.format(res.valorTotal)}}</span><br/>
+              <strong></strong><span></span><br/>
+            </p>
+          </div>
+          <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center" fxFlex="20">
+            <button mat-raised-button class="observe" style="width: 110px;" (click)="detail(res.departamento)">Ver Detalles</button>
+            <button mat-raised-button class="delete" style="width: 110px;" (click)="cancel(res)">Anular</button>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      </ng-container>
+    </ng-container>
+    <div class="spacer">
+    
+    </div>
+    <ng-container *ngIf="facturas!=null && facturas.length!=0 && !(loaderService.visibility | async)">
+      <mat-card class="title-box">
+          <p class="header">Reservas anteriores</p>
+      </mat-card>
+      <mat-tab-group animationDuration="0ms" dynamicHeight="false">
+        <mat-tab label="Reservas completadas">
+          <div fxLayout="row" fxLayoutAlign="center center" style="padding-bottom: 20px;" *ngIf="(completed==null || completed.length==0)">
+            <div class="spacer">
+    
+            </div>
+            <span>¡Aparecerán aquí las reservas que hayan concluído!</span>
+          </div>
+          <div [hidden]="dialogOpen() && (loaderService.visibility | async) ">
+            <ng-container *ngFor="let res of completed; index as i">
+              <div fxLayout="row" class="title-row">
+                {{res.departamento.ubicacionDepartamento}}
+              </div>
+              <div fxLayout="row" fxLayoutGap="1rem" class="depto-row">
+                <div fxFlex="20" fxLayoutAlign="center center">
+                  <img [src]="'assets/img/deptos/'+res.departamento.fotografias[0]" class="img-fluid img-list" alt=""/>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </mat-tab>
+        <mat-tab label="Reservas canceladas">
+          <div [hidden]="dialogOpen() && (loaderService.visibility | async) ">
+            <ng-container *ngFor="let res of cancelled; index as i">
+              <div fxLayout="row" class="title-row">
+                {{res.departamento.ubicacionDepartamento}}
+              </div>
+              <div fxLayout="row" fxLayoutGap="1rem" class="depto-row">
+                <div fxFlex="20" fxLayoutAlign="center center">
+                  <img [src]="'assets/img/deptos/'+res.departamento.fotografias[0]" class="img-fluid img-list" alt=""/>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </ng-container>
+  </mat-card>
+  <br><br><br><br>
+</div>
+

@@ -1,0 +1,45 @@
+.container {
+    width: 100%;
+    margin-top: 30px;
+}
+.fill-remaining-space {
+    flex: 1 1 auto;
+}
+.info {
+    width: 65%;
+    margin-top: 30%;
+    padding: 10px 0px 10px 0px;
+    background-color: #9ce697;
+    text-align: center;
+}
+mat-form-field{
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 5px;
+    font-size: 14px;
+}
+mat-divider{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+strong {
+    color: #007245;
+    margin-right: 2px;
+}
+p span {
+    float: right;
+    text-align: right;
+    clear: both;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+.confirm{
+    background-color: #6f74dd;
+    width: 100%;
+    color: white;
+}
+.cancel{
+    background-color: #fd3939;
+    width: 100%;
+    color: white;
+}

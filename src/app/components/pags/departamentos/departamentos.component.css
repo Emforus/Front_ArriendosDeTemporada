@@ -1,0 +1,70 @@
+.spacer{
+    margin-top: 0;
+    height: 75px;
+    width: 10px;
+    margin-bottom: 0;
+}
+.title{
+    font-size: 24px;
+    font-weight: bold;
+}
+img {
+    max-height: inherit;
+    height: 100%;
+    align-self: center;
+}
+.depto-row{
+    min-height: 150px;
+    max-height: 150px;
+   
+    border-color: #00227b;
+    border-width: 1px;
+    display: inline-block;
+}
+.title-row{
+    max-height: 26px;
+    min-height: 26px;
+    width: 100%;
+    background-color: #007245;
+    color: white;
+    padding-left: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+}
+
+.observe{
+    width: 45%;
+    background-color: #00c767;
+    color: white;
+}
+
+.disabled{
+  background-color: #606060;
+  color: white;
+}
+
+html,
+body,
+.intro {
+  height: 100%;
+}
+
+table td,
+table th {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.card {
+  border-radius: .5rem;
+}
+
+.mask-custom {
+  background: rgba(24, 24, 16, .2);
+  border-radius: 2em;
+  backdrop-filter: blur(25px);
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  background-clip: padding-box;
+  box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+}

@@ -1,0 +1,94 @@
+<mat-toolbar>
+    <span class="title-component">Detalles del departamento</span>
+    <span class="fill-remaining-space"></span>
+    <button class="btn-dialog-close" mat-stroked-button (click)="close()" tabindex="-1">
+        <mat-icon>clear</mat-icon>
+    </button>
+</mat-toolbar>
+<div class="container" fxLayout="row" fxLayoutGap="20px">
+    <div class="imgcontainer" fxFlex="30" fxLayout="column" fxLayoutAlign="center stretch">
+        <div fxFlex="90" fxLayout="row" fxLayoutAlign="center start">
+            <img [src]="'assets/img/deptos/'+depto.fotografias[curimg]" class="img-fluid" alt=""/>
+        </div>
+        <div fxFlex="5" fxLayout="row" fxLayoutAlign="center ">
+        </div>
+        <div fxFlex fxLayout="row" fxLayoutAlign="center end">
+            <button class="imgbutton" (click)="img_prev()">&lt;</button>
+            <button class="imgbutton" (click)="img_next()">&gt;</button>
+        </div>
+    </div>
+    <div fxFlex fxLayout="column" fxLayoutAlign="center stretch">
+        <div fxFlex="60" fxLayout="row" fxLayoutAlign="center start">
+            <mat-tab-group animationDuration="0ms" dynamicHeight="false">
+                <mat-tab label="General">
+                    <p>
+                        <strong>Ubicación</strong><span>{{depto.ubicacionDepartamento}}</span><br/>
+                        <strong>Región</strong><span>{{depto.regionDepartamento}}</span><br/>
+                        <br/>
+                        <strong>Estado actual</strong><span>{{depto.estado}}</span><br/>
+                        <br/>
+                        <strong>Costo por noche</strong><span>{{formatter.format(depto.valorBase)}}</span><br/>
+                        <strong>N° Dormitorios</strong><span>{{depto.cantidadDormitorios}}</span><br/>
+                        <strong></strong><span></span><br/>
+                    </p>
+                </mat-tab>
+                <mat-tab label="Descripción">
+                    <p>
+                        <span style="float:none;">{{depto.descripcionDepartamento}}</span><br/>
+                    </p>
+                </mat-tab>
+                <mat-tab label="Servicios principales">
+                    <div *ngIf="depto.serviciosPrincipales === null" fxLayout="row" style="margin: 20px 0 20px 20px;">
+                        El departamento no tiene servicios principales registrados.
+                    </div>
+                    <div *ngIf="depto.serviciosPrincipales != undefined" fxLayout="row wrap" style="margin: 20px 0 20px 20px;">
+                        <div class="icon-container" >
+                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasWifi)">wifi</mat-icon><br/>
+                            Wi-Fi
+                        </div>
+                        <div class="icon-container">
+                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasPool)">pool</mat-icon><br/>
+                            Piscina
+                        </div>
+                        <div class="icon-container">
+                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasAC)">ac_unit</mat-icon><br/>
+                            AC
+                        </div>
+                        <div class="icon-container">
+                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasElevator)">unfold_more</mat-icon><br/>
+                            Ascensor
+                        </div>
+                        <div class="icon-container">
+                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasParking)">local_parking</mat-icon><br/>
+                            Estacionamiento
+                        </div>
+                        <div class="icon-container">
+                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.allowsPets)">pets</mat-icon><br/>
+                            Mascotas
+                        </div>
+                        <div class="icon-container">
+                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.allowsChildren)">child_friendly</mat-icon><br/>
+                            Niños
+                        </div>
+                        <div class="icon-container">
+                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.isWheelchairAccessible)">accessible</mat-icon><br/>
+                            Accesibilidad
+                        </div>
+                        <div fxLayout="column" *ngIf="depto.serviciosPrincipales.otherServices!=null && depto.serviciosPrincipales.otherServices.length!=0">
+                            <h6 style="margin-top: 10px;">Otros servicios</h6>
+                            <ul>
+                                <div *ngFor="let i of depto.serviciosPrincipales.otherServices">
+                                    <li style="font-size: 14px;">{{i}}</li>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </mat-tab>
+             </mat-tab-group>
+        </div>
+        <div fxFlex="20" fxLayout="row" fxLayoutAlign="center end">
+            
+        </div>
+    </div>
+    
+</div>

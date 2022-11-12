@@ -1,0 +1,57 @@
+<div class="spacer">
+</div>
+
+<div class="container">
+    <mat-card class="title-box mt-elevation-z2">
+        <h4 class="title" fxLayoutAlign="center center">Estadísticas</h4>
+    </mat-card>   
+    <mat-tab-group fxLayout="column" animationDuration="0ms" dynamicHeight="false">
+        <mat-tab fxFlex label="Informacion del mes">
+            <div class="table" [hidden]="dialogOpen() && (loaderService.visibility | async)">
+                <mat-table [dataSource]="dataSource" matSort>
+                    <ng-container matColumnDef="arriendos">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad de arriendos </mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.rol}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="servicios">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Servicio extra más solicitados</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.rol}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="ganancias">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Ganancias </mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.rol}}</mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                </mat-table>
+                <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10, 15,25]"></mat-paginator>
+            </div>
+        </mat-tab>
+        <mat-tab fxFlex label="Informacion historica">
+            <div class="table" [hidden]="dialogOpen() && (loaderService.visibility | async)">
+                <mat-table [dataSource]="dataHistorica" matSort>
+                    <ng-container matColumnDef="fecha">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Mes</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.fecha}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="arriendos">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad de arriendos </mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.arriendos}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="servicios">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Servicio extra más solicitados</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.servicios}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="ganancias">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Ganancias </mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.ganancias}}</mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumnsHistorica"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsHistorica"></mat-row>
+                </mat-table>
+                <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10, 15,25]"></mat-paginator>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>
+

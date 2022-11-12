@@ -1,0 +1,119 @@
+
+<mat-toolbar>
+    <span class="title-component">Detalles del Departamento </span>
+    <span class="fill-remaining-space"></span>
+    <button class="btn-dialog-close" mat-stroked-button (click)="close()" tabindex="-1">
+        <mat-icon>clear</mat-icon>
+    </button>
+</mat-toolbar>
+<div class="container"> 
+    <div fxLayout="column" fxLayoutGap="30px">
+        <div  fxLayout="row">
+            <mat-tab-group animationDuration="0ms" dynamicHeight="false">
+                <mat-tab label="Identificación">
+                    <p>
+                        <strong>Ubicación del Departamento: </strong><span>{{depto.ubicacionDepartamento}}</span><br/>
+                        <strong>Región del Departamento: </strong><span>{{depto.regionDepartamento}}</span><br/>
+                        <strong>Cantidad de Dormitorios: </strong><span> {{depto.cantidadDormitorios}} </span><br/>
+                        <strong>Valor por dia: </strong><span>{{formatter.format(depto.valorBase)}}</span><br/>
+                        <strong>Estado: </strong><span> {{depto.estado}} </span><br/>
+                    </p>
+                </mat-tab>
+                <mat-tab label="Descripción">
+                    <p>
+                        <span style="float:none;">{{depto.descripcionDepartamento}}</span><br/>
+                    </p>
+                </mat-tab>
+                <mat-tab label="Servicios">
+                    <div *ngIf="depto.serviciosPrincipales === null" fxLayout="row" style="margin: 20px 0 20px 20px;">
+                        El departamento no tiene servicios principales registrados.
+                    </div>
+                    <div *ngIf="depto.serviciosPrincipales != undefined" fxLayout="row wrap" style="margin: 20px 0 20px 20px;">
+                        <div class="icon-container" >
+                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasWifi)">wifi</mat-icon><br/>
+                            Wi-Fi
+                        </div>
+                        <div class="icon-container">
+                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasPool)">pool</mat-icon><br/>
+                            Piscina
+                        </div>
+                        <div class="icon-container">
+                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasAC)">ac_unit</mat-icon><br/>
+                            AC
+                        </div>
+                        <div class="icon-container">
+                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasElevator)">unfold_more</mat-icon><br/>
+                            Ascensor
+                        </div>
+                        <div class="icon-container">
+                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasParking)">local_parking</mat-icon><br/>
+                            Estacionamiento
+                        </div>
+                        <div class="icon-container">
+                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.allowsPets)">pets</mat-icon><br/>
+                            Mascotas
+                        </div>
+                        <div class="icon-container">
+                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.allowsChildren)">child_friendly</mat-icon><br/>
+                            Niños
+                        </div>
+                        <div class="icon-container">
+                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.isWheelchairAccessible)">accessible</mat-icon><br/>
+                            Accesibilidad
+                        </div>
+                        <div fxLayout="column" *ngIf="depto.serviciosPrincipales.otherServices!=null && depto.serviciosPrincipales.otherServices.length!=0">
+                            <h6 style="margin-top: 10px;">Otros servicios</h6>
+                            <ul>
+                                <div *ngFor="let i of depto.serviciosPrincipales.otherServices">
+                                    <li style="font-size: 14px;">{{i}}</li>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Imagenes">
+                    <div class="imgcontainer" fxFlex fxLayout="column" fxLayoutAlign="center stretch">
+                        <div fxFlex="90" fxLayout="row" fxLayoutAlign="center start">
+                            <img [src]="'assets/img/deptos/'+depto.fotografias[curimg]" class="img-fluid" alt=""/>
+                        </div>
+                        <div fxFlex="5" fxLayout="row" fxLayoutAlign="center ">
+                        </div>
+                        <div fxFlex fxLayout="row" fxLayoutAlign="center end">
+                            <button class="imgbutton" (click)="img_prev()">&lt;</button>
+                            <button class="imgbutton" (click)="img_next()">&gt;</button>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Facturas"><mat-card class="table-box mt-elevation-z2">
+                    <div fxLayout="row" style="padding-bottom: 20px;" class="example-header" *ngIf="dialogOpen() && (loaderService.visibility | async)">
+                        <mat-spinner style="margin: auto;" mode="indeterminate" [diameter]="100"></mat-spinner>
+                    </div>
+                    <div class="table" [hidden]="dialogOpen() && (loaderService.visibility | async)">
+                        <mat-table [dataSource]="dataSource" matSort>
+                            <ng-container matColumnDef="id">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                                <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="estado">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Estado actual</mat-header-cell>
+                                <mat-cell *matCellDef="let row">{{row.estado}}</mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                        </mat-table>
+                        <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10, 15,25]"></mat-paginator>
+                    </div>
+                </mat-card>
+                </mat-tab>
+            </mat-tab-group>
+            
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px" style="margin-top: 50px; text-align: center; margin: auto;">
+            <button [disabled]="(depto.estadoLogico)" mat-raised-button class="enable" (click)="enable()">Habilitar</button>
+            <button [disabled]="!(depto.estadoLogico)" mat-raised-button class="disable" (click)="disable()">Deshabilitar</button>
+            <button mat-raised-button class="delete" (click)="delete()">Eliminar</button>
+        </div>
+
+    </div> 
+
+</div>

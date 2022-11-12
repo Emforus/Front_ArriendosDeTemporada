@@ -1,0 +1,43 @@
+<mat-toolbar>
+    <span class="title-component">Editor de usuario</span>
+    <span class="fill-remaining-space"></span>
+    <button class="btn-dialog-close" mat-stroked-button (click)="close()" tabindex="-1">
+        <mat-icon>clear</mat-icon>
+    </button>
+</mat-toolbar>
+<div class="container">
+    <div>
+        <form [formGroup]="form">
+            <div class="form-container">
+                <mat-form-field style="margin-top: 30px;">
+                    <mat-label>ID Usuario</mat-label>
+                    <input formControlName="uid" [(ngModel)]="user.uid" matInput placeholder="Nombre de usuario">
+                    <mat-error>{{hasError('uid')?.error}}</mat-error>
+                </mat-form-field>
+                <mat-form-field style="margin-top: 10px;">
+                    <mat-label>Nombre completo</mat-label>
+                    <input formControlName="nombreUsuario" [(ngModel)]="user.nombreUsuario" matInput placeholder="Nombre completo">
+                    <mat-error>{{hasError('nombreUsuario')?.error}}</mat-error>
+                </mat-form-field>
+                <mat-form-field style="margin-top: 10px;">
+                    <mat-label>Correo electronico</mat-label>
+                    <input formControlName="email" [(ngModel)]="user.email" matInput placeholder="Email">
+                    <mat-error>{{hasError('email')?.error}}</mat-error>
+                </mat-form-field>
+                <mat-form-field style="margin-top: 10px;">
+                    <mat-label>Rol</mat-label>
+                    <mat-select formControlName="rol" [(ngModel)]="user.rol" matInput placeholder="Ambiente">
+                        <mat-option *ngFor="let r of roles" [value]="r.value">
+                            {{r.value}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>{{hasError('rol')?.error}}</mat-error>
+                </mat-form-field>
+                <div fxLayoutAlign="center center" class="button-row" style="margin-top: 3%;">
+                    <button mat-raised-button class="confirm" (click)="editar()">Confirmar</button>
+                    <button mat-raised-button class="cancel" (click)="close()">Cancelar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

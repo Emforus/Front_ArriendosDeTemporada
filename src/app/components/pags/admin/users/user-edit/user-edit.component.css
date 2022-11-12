@@ -1,0 +1,27 @@
+.container {
+    width: 100%;
+    margin-top: 2%;
+    margin: auto;
+}
+.form-container {
+    width: 100%;
+    margin-top: 5%;
+    margin: auto;
+}
+.fill-remaining-space {
+    flex: 1 1 auto;
+}
+mat-form-field{
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 5px;
+    font-size: 14px;
+}
+.confirm{
+    background-color: #6f74dd;
+    color: white;
+}
+.cancel{
+    background-color: #fd3939;
+    color: white;
+}

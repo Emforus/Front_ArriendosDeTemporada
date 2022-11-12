@@ -1,0 +1,63 @@
+<mat-toolbar>
+    <span class="title-component">Arrendar departamento</span>
+    <span class="fill-remaining-space"></span>
+    <button class="btn-dialog-close" mat-stroked-button (click)="close()" tabindex="-1">
+        <mat-icon>clear</mat-icon>
+    </button>
+</mat-toolbar>
+<div class="container" fxLayout="row" fxLayoutGap="20px">
+    <div fxFlex="40" fxLayout="column" fxLayoutAlign="center center">
+        <form  [formGroup]="form">
+            <mat-form-field style="margin-top: 30px;">
+                <mat-label>N° Huéspedes</mat-label>
+                <input #formGroup formControlName="cantidadClientes" matInput placeholder="1 a 9">
+                <mat-error>{{hasError('cantidadClientes')?.error}}</mat-error>
+            </mat-form-field>
+            <mat-form-field style="margin-top: 15px;">
+                <mat-label>Fecha de estadía</mat-label>
+                <mat-date-range-input [rangePicker]="picker" [min]="fechaMinima" [max]="fechaMaxima">
+                    <input formControlName="fechaCheckIn" matStartDate>
+                    <input (dateChange)="setDuracion()" formControlName="fechaCheckOut" matEndDate>
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+        </form>
+        <div fxLayout="column" fxLayoutAlign="center center" class="info">
+            <mat-icon >info</mat-icon>
+            <span>Al finalizar la reserva se tendrá que pagar el 20% del valor de esta como depósito inicial, mientras que el 80% restante se cobra al momento de acceder al departamento.</span>
+        </div>
+    </div>
+    <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+        <mat-tab-group style="width: 90%;" animationDuration="0ms" dynamicHeight="false">
+            <mat-tab label="Información">
+                <p style="margin-top: 10px;">
+                    <strong>Ubicación</strong><span>{{depto.ubicacionDepartamento}}</span><br/>
+                    <strong>Región</strong><span>{{depto.regionDepartamento}}</span><br/>
+                    <strong>Duración estadía</strong><span>{{duracion}} días</span><br/>
+                    <mat-divider></mat-divider>
+                    <strong>Costo por día</strong><span>{{formatter.format(depto.valorBase)}}</span><br/>
+                    <strong>Costo servicios extra</strong><span>{{formatter.format(0)}}</span><br/>
+                    <mat-divider></mat-divider>
+                    <strong>Subtotal</strong><span>{{formatter.format(depto.valorBase*duracion)}}</span><br/>
+                    <strong>IVA (19%)</strong><span>{{formatter.format(iva)}}</span><br/>
+                    <strong>Valor final</strong><span>{{formatter.format((depto.valorBase*duracion)+iva)}}</span><br/>
+                    <mat-divider></mat-divider>
+                    <strong>Depósito inicial a pagar (20%)</strong><span>{{formatter.format(deposito)}}</span><br/>
+                </p>
+            </mat-tab>
+            <mat-tab label="Servicios extra">
+                <p>
+                    <br>
+                    <span style="float:none;">Próximamente . . . </span><br/>
+                </p>
+            </mat-tab>
+        </mat-tab-group>
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem" class="button-row" style="margin-top: 3%;">
+            <button mat-raised-button class="confirm" (click)="arrendar()">[debug]Arrendar</button>
+            <div #paypal mat-raised-button></div>
+            <button mat-raised-button class="cancel" (click)="close()">Cancelar</button>
+            
+        </div>
+    </div>
+</div>

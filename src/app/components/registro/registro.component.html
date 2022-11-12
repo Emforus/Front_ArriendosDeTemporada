@@ -1,0 +1,101 @@
+<section class="vh-100" style="background-color: #c1ffc9">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-xl-10">
+          <div class="card" style="border-radius: 1rem;">
+            <div class="row g-0">
+              <div class="col-md-6 col-lg-5 d-none d-md-block">
+                <img src="../../../assets/img/login.png"
+                  alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+              </div>
+              <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                <div class="card-body p-4 p-lg-5 text-black">
+  
+                <!-- ===== REGISTRO Y LOGIN ===== -->
+                <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="tab-register" data-mdb-toggle="pill" href="login" role="tab"
+                            aria-controls="pills-register" aria-selected="false">Iniciar Sesión</a>
+                        </li>
+                    <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="tab-login" data-mdb-toggle="pill" href="registro" role="tab"
+                        aria-controls="pills-login" aria-selected="true">Registrarse</a>
+                    </li>
+                </ul>
+                <!-- ===== REGISTRO Y LOGIN ===== -->
+                
+                <!-- Pills content -->
+                <div class="tab-content">
+                    
+                    <form [formGroup]="aFormGroup">
+                
+                        <!-- Usuario -->
+                        <div class="form-outline mb-4">
+                        <input type="text" id="registerUsername" class="form-control" formControlName="uid"/>
+                        <label class="form-label" for="registerUsername">Nombre de usuario</label>
+                        <ng-container *ngIf="aFormGroup.controls['uid'].invalid">
+                          <p style="color: red; float: right;">{{hasError('uid')?.error}}</p>
+                        </ng-container>     
+                        </div>                 
+                        <div class="row">
+                          <!-- Nombre -->
+                          <div class="form-outline col">
+                          <input type="text" id="registerName" class="form-control" formControlName="nombre"/>
+                          <label class="form-label" for="registerName">Nombre</label>
+                          <ng-container *ngIf="aFormGroup.controls['nombre'].invalid">
+                            <p style="color: red; float: right;">{{hasError('nombre')?.error}}</p>
+                          </ng-container>     
+                          </div>
+                          
+                          <!-- Apellido -->
+                          <div class="form-outline col">
+                          <input type="text" id="registerSurname" class="form-control" formControlName="apellido"/>
+                          <label class="form-label" for="registerSurname">Apellido</label>
+                          <ng-container *ngIf="aFormGroup.controls['apellido'].invalid">
+                            <p style="color: red; float: right;">{{hasError('apellido')?.error}}</p>
+                          </ng-container>     
+                          </div>
+                        </div>
+                
+                        <!-- Email -->
+                        <div class="form-outline mb-4">
+                        <input type="email" id="registerEmail" class="form-control" formControlName="email"/>
+                        <label class="form-label" for="registerEmail">Email</label>
+                        <ng-container *ngIf="aFormGroup.controls['email'].invalid">
+                          <p style="color: red; float: right;">{{hasError('email')?.error}}</p>
+                        </ng-container>     
+                        </div>
+                
+                        <!-- Contraseña -->
+                        <div class="form-outline mb-4">
+                        <input type="password" id="registerPassword" class="form-control" formControlName="password"/>
+                        <label class="form-label" for="registerPassword">Contraseña</label>
+                        <ng-container *ngIf="aFormGroup.controls['password'].invalid">
+                          <p style="color: red; float: right;">{{hasError('password')?.error}}</p>
+                        </ng-container>     
+                        </div>
+                
+                        <!-- Repetir Contraseña -->
+                        <div class="form-outline mb-4">
+                        <input type="password" id="registerRepeatPassword" class="form-control" formControlName="password2"/>
+                        <label class="form-label" for="registerRepeatPassword">Repite Contraseña</label>
+                        <ng-container *ngIf="aFormGroup.controls['password2'].invalid">
+                          <p style="color: red; float: right;">{{hasError('password2')?.error}}</p>
+                        </ng-container>     
+                        </div>                   
+                
+                        <!-- Submit button -->
+                        <button type="submit" (click)="registrar()" class="btn btn-primary btn-block mb-3">Registrarse</button>
+                    </form>
+                    
+                </div>
+                <!-- Pills content -->
+  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

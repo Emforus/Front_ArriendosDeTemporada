@@ -1,0 +1,62 @@
+<div class="spacer">
+
+</div>
+<div class="container">
+    <mat-card class="title-box mt-elevation-z2">
+        <h4 class="title" fxLayoutAlign="center center">Usuarios</h4>
+         <button mat-button class="create" style="margin-right: 20px;">
+            Crear usuario
+         </button>
+    </mat-card>
+    <mat-card class="table-box mt-elevation-z2">
+        <div fxLayout="row" style="padding-bottom: 20px;" class="example-header" *ngIf="dialogOpen() && (loaderService.visibility | async)">
+            <mat-spinner style="margin: auto;" mode="indeterminate" [diameter]="100"></mat-spinner>
+        </div>
+        <div class="table" [hidden]="dialogOpen() && (loaderService.visibility | async)">
+            <mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="uid">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre de Usuario</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.uid}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="nombreUsuario">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre Completo</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.nombreUsuario}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Correo electronico</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.email}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="rol">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Rol</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.rol}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="fechaRegistroUsuario">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de registro</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{formatDate(row.fechaRegistroUsuario)}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="lastLogOn">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Ultimo Inicio de sesión</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{formatDate(row.lastLogOn)}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="estadoLogico">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Estado actual</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.estadoLogico?'Habilitado':'Deshabilitado'}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="acciones">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Acciones</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <button mat-button class="button details" (click)="detail(row)">
+                            <mat-icon>visibility</mat-icon>
+                        </button>
+                        <button mat-button class="button edit" style="margin-left:5px;" (click)="edit(row)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            </mat-table>
+            <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10, 15,25]"></mat-paginator>
+        </div>
+    </mat-card>
+</div>
