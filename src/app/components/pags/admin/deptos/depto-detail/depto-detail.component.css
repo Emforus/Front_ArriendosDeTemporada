@@ -16,14 +16,6 @@ strong.child {
     margin-left: 20px;
     font-weight: 500;
 }
-mat-tab-group {
-    width: 90%;
-    max-width: initial;
-    font-size: 18px;
-    min-height: 400px;
-    padding: 0 5% 0 5%;
-    float: left;
-}
 mat-tab.label {
     font-style: italic;
     font-weight: bold;

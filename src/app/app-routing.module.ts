@@ -12,6 +12,8 @@ import { UsersComponent } from './components/pags/admin/users/users.component';
 import { DeptosComponent } from './components/pags/admin/deptos/deptos.component';
 import { ReservasComponent } from './components/pags/reservas/reservas.component';
 import { EstadisticasComponent } from './components/pags/admin/estadisticas/estadisticas.component';
+import { RecepcionComponent } from './components/pags/recepcion/recepcion.component';
+import { ServiciosComponent } from './components/pags/admin/servicios/servicios.component';
 
 /* == Rutas de navegacion == */
 const routes: Routes = [
@@ -27,6 +29,8 @@ const routes: Routes = [
   {path: 'deptos', component: DeptosComponent},
   {path: 'reservas', component: ReservasComponent},
   {path: 'estadisticas', component: EstadisticasComponent},
+  {path: 'recepcion', component: RecepcionComponent},
+  {path: 'servicios', component: ServiciosComponent},
 
 
   /* Siempre al final */

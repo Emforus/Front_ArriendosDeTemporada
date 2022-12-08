@@ -66,13 +66,13 @@ export class UserEditComponent implements OnInit {
           error={error:'Campo obligatorio'}
           break;
         case 'maxlength':
-          error={error:'Maximo '+this.form.controls[control].errors!['maxlength'].requiredLength+' caracteres'}
+          error={error:'Máximo '+this.form.controls[control].errors!['maxlength'].requiredLength+' caracteres'}
           break;
         case 'pattern':
           error={error:'El campo presenta caracteres prohibidos'}
           break;
         case 'email':
-          error={error:'Formato de correo invalido'}
+          error={error:'Formato de correo inválido'}
           break;
       }
     }
@@ -83,7 +83,7 @@ export class UserEditComponent implements OnInit {
     if (this.form.invalid) {return;}
     console.log('Iniciando registro de usuario')
     this.dialog.open(ConfirmDialogComponent, {
-      data: {mensaje: 'Esta seguro de que los datos ingresados son los correctos?', accion: 'editar'}
+      data: {mensaje: '¿Está seguro de que los datos ingresados son los correctos?', accion: 'editar'}
     }).afterClosed().subscribe((response: {status:boolean}) => {
       if (response.status) {
         this.userService.editarUsuario(this.user).pipe(switchMap(()=>{

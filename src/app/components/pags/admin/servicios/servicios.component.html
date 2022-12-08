@@ -1,0 +1,58 @@
+<div class="spacer">
+
+</div>
+<div class="container">
+    <mat-card class="title-box mt-elevation-z2">
+        <h4 class="title" fxLayoutAlign="center center">Servicios complementarios</h4>
+         <button mat-button class="create" style="margin-right: 20px;" (click)="create()">
+            Registrar servicio
+         </button>
+    </mat-card>
+    <mat-card class="table-box mt-elevation-z2">
+        <div fxLayout="row" style="padding-bottom: 20px;" class="example-header" *ngIf="dialogOpen() && (loaderService.visibility | async)">
+            <mat-spinner style="margin: auto;" mode="indeterminate" [diameter]="100"></mat-spinner>
+        </div>
+        <div class="table" [hidden]="dialogOpen() && (loaderService.visibility | async)">
+            <mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="nombre">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre del servicio</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.nombre}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="descripcion">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.descripcion}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="costoServicio">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Costo</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{formatter.format(row.costoServicio)}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="tipoFacturacion">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de facturación</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.servicioUnitario?'Individual':'Grupal'}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="estadoLogico">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Estado actual</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.estadoLogico?'Habilitado':'Deshabilitado'}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="acciones">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Acciones</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <button mat-button class="button details" (click)="detail(row)">
+                            <mat-icon>visibility</mat-icon>
+                        </button>
+                        <button mat-button class="button edit" style="margin-left:5px;" (click)="edit(row)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            </mat-table>
+            <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10, 15,25]"></mat-paginator>
+        </div>
+    </mat-card>
+</div>

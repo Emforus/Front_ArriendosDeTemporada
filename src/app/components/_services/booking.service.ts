@@ -35,6 +35,24 @@ export class BookingService extends GenericService<Factura> {
         return response
     }
 
+    checkIn(item: Factura) {
+        const httpHeaders = new HttpHeaders({
+            'Content-Type':'application/json'
+        })
+
+        let response = this.http.put(`${this.url}/checkin`, item, {headers: httpHeaders})
+        return response
+    }
+
+    checkOut(item: Factura) {
+        const httpHeaders = new HttpHeaders({
+            'Content-Type':'application/json'
+        })
+
+        let response = this.http.put(`${this.url}/checkout`, item, {headers: httpHeaders})
+        return response
+    }
+
     getChange(){
         return this.change.asObservable();
     }

@@ -23,7 +23,7 @@
                     <mat-cell *matCellDef="let row">{{row.nombreUsuario}}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="email">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Correo electronico</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Correo electrónico</mat-header-cell>
                     <mat-cell *matCellDef="let row">{{row.email}}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="rol">
@@ -35,7 +35,7 @@
                     <mat-cell *matCellDef="let row">{{formatDate(row.fechaRegistroUsuario)}}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="lastLogOn">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Ultimo Inicio de sesión</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Último Inicio de sesión</mat-header-cell>
                     <mat-cell *matCellDef="let row">{{formatDate(row.lastLogOn)}}</mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="estadoLogico">

@@ -10,7 +10,7 @@
         <form  [formGroup]="form">
             <mat-form-field style="margin-top: 30px;">
                 <mat-label>N° Huéspedes</mat-label>
-                <input #formGroup formControlName="cantidadClientes" matInput placeholder="1 a 9">
+                <input type="number" (blur)="calc()" #formGroup formControlName="cantidadClientes" matInput placeholder="1 a 9">
                 <mat-error>{{hasError('cantidadClientes')?.error}}</mat-error>
             </mat-form-field>
             <mat-form-field style="margin-top: 15px;">
@@ -37,24 +37,35 @@
                     <strong>Duración estadía</strong><span>{{duracion}} días</span><br/>
                     <mat-divider></mat-divider>
                     <strong>Costo por día</strong><span>{{formatter.format(depto.valorBase)}}</span><br/>
-                    <strong>Costo servicios extra</strong><span>{{formatter.format(0)}}</span><br/>
+                    <strong>Costo servicios extra</strong><span>{{formatter.format(servicios)}}</span><br/>
                     <mat-divider></mat-divider>
-                    <strong>Subtotal</strong><span>{{formatter.format(depto.valorBase*duracion)}}</span><br/>
+                    <strong>Subtotal</strong><span>{{formatter.format(subtotal)}}</span><br/>
                     <strong>IVA (19%)</strong><span>{{formatter.format(iva)}}</span><br/>
-                    <strong>Valor final</strong><span>{{formatter.format((depto.valorBase*duracion)+iva)}}</span><br/>
+                    <strong>Valor final</strong><span>{{formatter.format(total)}}</span><br/>
                     <mat-divider></mat-divider>
                     <strong>Depósito inicial a pagar (20%)</strong><span>{{formatter.format(deposito)}}</span><br/>
                 </p>
             </mat-tab>
             <mat-tab label="Servicios extra">
-                <p>
+                <p style="margin-top: 10px;">
                     <br>
-                    <span style="float:none;">Próximamente . . . </span><br/>
+                    <ng-container *ngFor="let svc of depto.serviciosDisponibles; index as i">
+                        <div fxLayout="row">
+                            <div fxFlex=90 fxLayout="column">
+                                <strong>{{svc.servicio.nombre}}</strong>
+                                {{formatter.format(svc.servicio.costoServicio)}}{{svc.servicio.servicioUnitario?' por huesped.':' total.'}}    
+                            </div>
+                            <div fxFlex fxLayoutAlign="center center">
+                                <mat-checkbox (change)="addService(i, $event)"></mat-checkbox>
+                            </div>
+                        </div>
+                        <br/>
+                    </ng-container>
                 </p>
             </mat-tab>
         </mat-tab-group>
         <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem" class="button-row" style="margin-top: 3%;">
-            <button mat-raised-button class="confirm" (click)="arrendar()">[debug]Arrendar</button>
+            <!-- <button mat-raised-button class="confirm" (click)="arrendar()">[debug]Arrendar</button> -->
             <div #paypal mat-raised-button></div>
             <button mat-raised-button class="cancel" (click)="close()">Cancelar</button>
             

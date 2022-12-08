@@ -2,6 +2,7 @@
 import { Factura } from "./factura";
 import { Utilidad } from "./utilidad";
 import { ServicioGenerico } from "./servicio.generico";
+import { ServicioDepartamento } from "./join.servicio.departamento";
 export class Departamento {
     idDepartamento: number;
     ubicacionDepartamento: string;
@@ -18,4 +19,5 @@ export class Departamento {
     utilidades: Utilidad[];
     facturas: Factura[];
     serviciosPrincipales: ServicioGenerico;
+    serviciosDisponibles: ServicioDepartamento[];
 }

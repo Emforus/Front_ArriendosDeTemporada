@@ -1,0 +1,47 @@
+<div class="spacer">
+</div>
+
+<div class="container">
+    <mat-card class="title-box mt-elevation-z2">
+        <h4 class="title" fxLayoutAlign="center center">Estadísticas</h4>
+    </mat-card> 
+    <div fxLayout="row" style="padding-bottom: 20px;" class="example-header" *ngIf="dialogOpen() && (loaderService.visibility | async)">
+        <mat-spinner style="margin: auto;" mode="indeterminate" [diameter]="100"></mat-spinner>
+    </div>
+    <div fxLayout="column"  style="margin-top: 20px;" [hidden]="dialogOpen() && (loaderService.visibility | async)">
+        <div fxLayout="column" fxFlex>
+            <div fxFlex style="display: inline-flex; margin-left: 25%;">
+                <canvasjs-chart [options]="ingresosDeptoMes"></canvasjs-chart>
+            </div>
+            <div fxFlex style="display: inline-flex; margin-top: 20px; margin-left: 25%;">
+                <canvasjs-chart [options]="estadoReservasMes"></canvasjs-chart>
+            </div>
+        </div>
+        <div fxFlex fxLayout="column" class="table" [hidden]="dialogOpen() && (loaderService.visibility | async)">
+            <mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef>ID Departamento</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="valor">
+                    <mat-header-cell *matHeaderCellDef>Ingresos totales</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{formatter.format(row.valor)}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="valorServicios">
+                    <mat-header-cell *matHeaderCellDef>Ingresos por servicios extra</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{formatter.format(row.valorServicios)}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="arriendos">
+                    <mat-header-cell *matHeaderCellDef>Total de arriendos</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.arriendos}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="cancelaciones">
+                    <mat-header-cell *matHeaderCellDef>Total de cancelaciones</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.cancelaciones}}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            </mat-table>
+        </div>
+    </div>
+</div>

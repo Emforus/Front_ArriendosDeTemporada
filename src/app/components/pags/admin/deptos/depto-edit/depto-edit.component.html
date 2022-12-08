@@ -1,1 +1,290 @@
-<p>depto-edit works!</p>
+<mat-toolbar>
+    <span class="title-component">Formulario Departamento</span>
+    <span class="fill-remaining-space"></span>
+    <button class="btn-dialog-close" mat-stroked-button (click)="close()" tabindex="-1">
+        <mat-icon>clear</mat-icon>
+    </button>
+</mat-toolbar>
+<div class="container" fxLayout="column" fxLayoutGap="10px">
+    <div fxFlex="85" fxLayout="row" fxLayoutAlign="center ">
+        <mat-tab-group mat-stretch-tabs animationDuration="0ms" dynamicHeight="false">
+            <mat-tab label="General">
+                <form [formGroup]="form">
+                    <div class="form-container">
+                        <mat-form-field style="margin-top: 30px;">
+                            <mat-label>Ubicación</mat-label>
+                            <input formControlName="ubicacion" [(ngModel)]="depto.ubicacionDepartamento" matInput placeholder="Nombre de usuario">
+                            <mat-error>{{hasError(form, 'ubicacion')?.error}}</mat-error>
+                        </mat-form-field>
+                        <mat-form-field style="margin-top: 10px;">
+                            <mat-label>Región</mat-label>
+                            <mat-select formControlName="region" [(ngModel)]="depto.regionDepartamento" matInput placeholder="Región">
+                                <mat-option *ngFor="let r of regiones" [value]="r.value">
+                                    {{r.value}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>{{hasError(form, 'region')?.error}}</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" style="margin-top: 30px;">
+                            <mat-label>Descripción</mat-label>
+                            <textarea formControlName="descripcion" [(ngModel)]="depto.descripcionDepartamento" matInput placeholder="Descripción"></textarea>
+                            <mat-error>{{hasError(form, 'descripcion')?.error}}</mat-error>
+                        </mat-form-field>
+                        <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutAlign=" center" style="margin-top: 10px; width: 75%;">
+                            <mat-form-field fxFlex>
+                                <mat-label>Valor base</mat-label>
+                                <input formControlName="valorBase" [(ngModel)]="depto.valorBase" matInput placeholder="Valor por noche" style="text-align: right; display: inline-block;">
+                                <mat-error>{{hasError(form, 'valorBase')?.error}}</mat-error>
+                            </mat-form-field>
+                            <mat-form-field fxFlex>
+                                <mat-label>Estado inicial/actual</mat-label>
+                                <mat-select formControlName="estado" [(ngModel)]="depto.estado" matInput placeholder="Estado">
+                                    <mat-option *ngFor="let e of estados" [value]="e.value">
+                                        {{e.value}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{hasError(form, 'estado')?.error}}</mat-error>
+                            </mat-form-field>
+                            <mat-form-field fxFlex>
+                                <mat-label>N° Dormitorios</mat-label>
+                                <input formControlName="cantidadDormitorios" [(ngModel)]="depto.cantidadDormitorios" matInput placeholder="Número de dormitorios">
+                                <mat-error>{{hasError(form, 'cantidadDormitorios')?.error}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+            </mat-tab>
+            <mat-tab label="Servicios básicos">
+                <div fxLayout.gt-sm="row" fxLayout.lt-md="column">
+                    <div fxFlex.gt-sm="50" fxFlex.lt-md="100" fxLayout="row" style="margin-top: 20px;">
+                        <div fxFlex fxLayout="column" style="margin: 20px 0 20px 20px;">
+                            <span fxLayout="row">
+                                <div class="icon-container">
+                                    <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasWifi)">wifi</mat-icon><br/>
+                                    Wi-Fi
+                                </div>
+                                <mat-checkbox [(ngModel)]="depto.serviciosPrincipales.hasWifi"></mat-checkbox>
+                            </span>
+                            <span fxLayout="row">
+                                <div class="icon-container">
+                                    <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasPool)">pool</mat-icon><br/>
+                                    Piscina
+                                </div>
+                                <mat-checkbox [(ngModel)]="depto.serviciosPrincipales.hasPool"></mat-checkbox>
+                            </span>
+                            <span fxLayout="row">
+                                <div class="icon-container">
+                                    <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasAC)">ac_unit</mat-icon><br/>
+                                    AC
+                                </div>
+                                <mat-checkbox [(ngModel)]="depto.serviciosPrincipales.hasAC"></mat-checkbox>
+                            </span>
+                            <span fxLayout="row">
+                                <div class="icon-container">
+                                    <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasElevator)">unfold_more</mat-icon><br/>
+                                    Ascensor
+                                </div>
+                                <mat-checkbox [(ngModel)]="depto.serviciosPrincipales.hasElevator"></mat-checkbox>
+                            </span>
+                        </div>
+                        <div fxFlex fxLayout="column" style="margin: 20px 0 20px 20px;">
+                            <span fxLayout="row">
+                                <div class="icon-container">
+                                    <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasParking)">local_parking</mat-icon><br/>
+                                    Estacionamiento
+                                </div>
+                                <mat-checkbox [(ngModel)]="depto.serviciosPrincipales.hasParking"></mat-checkbox>
+                            </span>
+                            <span fxLayout="row">
+                                <div class="icon-container">
+                                    <mat-icon [style.color]="getColor(depto.serviciosPrincipales.allowsPets)">pets</mat-icon><br/>
+                                    Mascotas
+                                </div>
+                                <mat-checkbox [(ngModel)]="depto.serviciosPrincipales.allowsPets"></mat-checkbox>
+                            </span>
+                            <span fxLayout="row">
+                                <div class="icon-container">
+                                    <mat-icon [style.color]="getColor(depto.serviciosPrincipales.allowsChildren)">child_friendly</mat-icon><br/>
+                                    Niños
+                                </div>
+                                <mat-checkbox [(ngModel)]="depto.serviciosPrincipales.allowsChildren"></mat-checkbox>
+                            </span>
+                            <span fxLayout="row">
+                                <div class="icon-container">
+                                    <mat-icon [style.color]="getColor(depto.serviciosPrincipales.isWheelchairAccessible)">accessible</mat-icon><br/>
+                                    Accesibilidad
+                                </div>
+                                <mat-checkbox [(ngModel)]="depto.serviciosPrincipales.isWheelchairAccessible"></mat-checkbox>
+                            </span>
+                        </div>
+                    </div>
+                    <div fxLayout="column" fxFlex="50">
+                        <h4 style="margin-top: 20px; text-align: center;">Otros servicios</h4>
+                        <form #svcform="ngForm">
+                            <div *ngFor="let s of depto.serviciosPrincipales.otherServices; index as i; trackBy: trackByFn">
+                                <mat-form-field fxFlex>
+                                    <mat-label></mat-label>
+                                    <input [(ngModel)]="depto.serviciosPrincipales.otherServices[i]" [ngModelOptions]="{name:'servicio'+i, updateOn: 'blur'}" 
+                                    matInput placeholder="Servicio" maxlength="100" required pattern="[a-zA-ZÀ-ÿ\u00f1\u00d10-9_, ]*">
+                                    <mat-error *ngIf="svcform.controls['servicio'+i]?.errors">{{svcError(svcform.controls['servicio'+i])?.error}}</mat-error>
+                                </mat-form-field>
+                                <button mat-raised-button class="button remove" (click)="delService(s)">
+                                    <mat-icon>remove_circle_outline</mat-icon>
+                                </button>
+                            </div>
+                        </form>
+                        <button fxLayoutAlign="center " mat-raised-button class="button add" (click)="addService()">
+                            <mat-icon>add_circle_outline</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Servicios complementarios">
+                <div fxLayout="row">
+                    <div fxLayout="column" fxFlex="45">
+                        <mat-card class="table-box mt-elevation-z2">
+                            <h4 style="margin-top: 20px; text-align: center;">No Asignados</h4>
+                            <div class="table" [hidden]="(loaderService.visibility | async)">
+                                <mat-table #table [dataSource]="unselectedServices" matSort>
+                                    <ng-container matColumnDef="nombre">
+                                        <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+                                        <mat-cell *matCellDef="let row">{{row.nombre}}</mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="valor">
+                                        <mat-header-cell *matHeaderCellDef>Valor</mat-header-cell>
+                                        <mat-cell *matCellDef="let row">{{formatter.format(row.costoServicio)}}</mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="facturacion">
+                                        <mat-header-cell *matHeaderCellDef>Tipo de facturación</mat-header-cell>
+                                        <mat-cell *matCellDef="let row">{{row.servicioUnitario?'Individual (Pago por huésped)':'Grupal (Pago único)'}}</mat-cell>
+                                    </ng-container>
+                                    <mat-header-row *matHeaderRowDef="['nombre', 'valor', 'facturacion']"></mat-header-row>
+                                    <mat-row (click)="enableService(row)" *matRowDef="let row; columns: ['nombre', 'valor', 'facturacion']"></mat-row>
+                                </mat-table>
+                                <mat-paginator [pageSize]="5" [pageSizeOptions]="[5,10, 15,25]" [length]="unselectedServices.length"></mat-paginator>
+                            </div>
+                        </mat-card>
+                    </div>
+                    <div fxLayout="column" fxFlex="10" fxLayoutAlign="center center">
+                        <div fxFill  fxLayoutAlign="center center">
+                            <mat-icon>compare_arrows</mat-icon>
+                        </div>
+                    </div>
+                    <div fxLayout="column" fxFlex="45">
+                        <mat-card class="table-box mt-elevation-z2">
+                            <h4 style="margin-top: 20px; text-align: center;">Asignados</h4>
+                            <div class="table" [hidden]="(loaderService.visibility | async)">
+                                <mat-table #table [dataSource]="depto.serviciosDisponibles" matSort>
+                                    <ng-container matColumnDef="nombre">
+                                        <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+                                        <mat-cell *matCellDef="let row">{{row.servicio.nombre}}</mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="valor">
+                                        <mat-header-cell *matHeaderCellDef>Valor</mat-header-cell>
+                                        <mat-cell *matCellDef="let row">{{formatter.format(row.servicio.costoServicio)}}</mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="facturacion">
+                                        <mat-header-cell *matHeaderCellDef>Tipo de facturación</mat-header-cell>
+                                        <mat-cell *matCellDef="let row">{{row.servicio.servicioUnitario?'Individual (Pago por huésped)':'Grupal (Pago único)'}}</mat-cell>
+                                    </ng-container>
+                                    <mat-header-row *matHeaderRowDef="['nombre', 'valor', 'facturacion']"></mat-header-row>
+                                    <mat-row (click)="disableService(row)" *matRowDef="let row; columns: ['nombre', 'valor', 'facturacion']"></mat-row>
+                                </mat-table>
+                                <mat-paginator [pageSize]="5" [pageSizeOptions]="[5,10, 15,25]" [length]="depto.serviciosDisponibles.length"></mat-paginator>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Fotografias">
+                <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutAlign="center ">
+                    <div fxFlex="30" fxLayout.gt-sm="row wrap" fxLayout.lt-md="column" fxLayoutGap="5px">
+                        <ng-container *ngFor="let f of depto.fotografias; index as i">
+                            <div [id]="f" class="imgcontainer" [class.selected]="isSelected(i)" (click)="selectedImage=i">
+                                <img [src]="'assets/img/deptos/'+depto.fotografias[i]" alt=""/>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div fxFlex="70" fxLayout="column" fxLayoutAlign="center stretch">
+                        <ng-container *ngIf="selectedImage>=0">
+                            <div class="imgfocused" fxFlex="90" fxLayout="row" fxLayoutAlign="center start">
+                                <img [src]="'assets/img/deptos/'+depto.fotografias[selectedImage]" class="imgfluid" alt=""/>
+                            </div>
+                            <div fxFlex="5" fxLayout="row" fxLayoutAlign="center ">
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Inventario">
+                <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutAlign="center " style="display: inline-block; height: 100%; overflow-y: auto;">
+                    <div fxFlex.gt-sm="30" fxFlex.lt-md="100" fxFl fxLayout="column" fxLayoutGap="10px" style="height: initial; overflow-y: scroll;">
+                        <mat-card class="table-box mt-elevation-z2">
+                            <button fxLayoutAlign="center " mat-raised-button class="button add" (click)="newUtil()">
+                                <mat-icon>add_circle_outline</mat-icon>
+                            </button>
+                            <div class="table">
+                                <mat-table [dataSource]="inventario" matSort>
+                                    <ng-container matColumnDef="nombre">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</mat-header-cell>
+                                        <mat-cell *matCellDef="let row">{{row.nombre}}</mat-cell>
+                                    </ng-container>
+                                    <mat-header-row *matHeaderRowDef="['nombre']"></mat-header-row>
+                                    <mat-row [class.selected]="utilSelected(i)" (click)="selectUtil(i)" *matRowDef="let row; let i = index; columns: ['nombre']"></mat-row>
+                                </mat-table>
+                                <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10, 15,25]"></mat-paginator>
+                            </div>
+                        </mat-card>
+                    </div>
+                    <div fxFlex.gt-sm="70" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center stretch" style="height: initial; overflow-y: auto;">
+                        <ng-container *ngIf="selectedItem>=0">
+                            <form [formGroup]="utilForm">
+                                <div fxLayout.gt-sm="row" fxLayout.lt-md="column" class="form-container">
+                                    <div fxFlex fxLayout="column">
+                                        <mat-form-field >
+                                            <mat-label>Nombre</mat-label>
+                                            <input formControlName="nombre" matInput placeholder="Nombre de utilidad">
+                                            <mat-error>{{hasError(utilForm, 'nombre')?.error}}</mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" style="margin-top: 30px;">
+                                            <mat-label>Descripción</mat-label>
+                                            <textarea formControlName="descripcion" matInput placeholder="Descripción"></textarea>
+                                            <mat-error>{{hasError(utilForm, 'descripcion')?.error}}</mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field fxFlex>
+                                            <mat-label>Estado inicial/actual</mat-label>
+                                            <mat-select formControlName="estado" [(ngModel)]="depto.estado" matInput placeholder="Estado">
+                                                <mat-option *ngFor="let e of estadosUtilidades" [value]="e.value">
+                                                    {{e.value}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>{{hasError(utilForm, 'estado')?.error}}</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex fxLayout="column">
+                                        <mat-form-field fxFlex>
+                                            <mat-label>Valor</mat-label>
+                                            <input type="number" formControlName="valor" matInput placeholder="Valor utilidad" style="text-align: right;">
+                                            <mat-error>{{hasError(utilForm, 'valor')?.error}}</mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field fxFlex>
+                                            <mat-label>Cantidad</mat-label>
+                                            <input type="number" formControlName="cantidad" style="text-align: right;" matInput placeholder="Cantidad">
+                                            <mat-error>{{hasError(utilForm, 'cantidad')?.error}}</mat-error>
+                                        </mat-form-field>
+                                        <button mat-raised-button class="cancel" style="width: 70%; margin-left: 15%;" (click)="deleteUtil(selectedItem)">Remover</button>
+                                        <button mat-raised-button class="confirm" style="width: 70%; margin-left: 15%; margin-top: 5px;" (click)="updateUtil(selectedItem)">Registrar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </ng-container>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+    <div fxFlex="10" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+        <button mat-raised-button class="cancel" (click)="close()">Cancelar</button>
+        <button mat-raised-button class="confirm" (click)="operar()">Confirmar</button>
+    </div>
+</div>

@@ -5,5 +5,7 @@ export class Utilidad {
     nombre: string;
     descripcion: string;
     valor: number;
+    cantidad: number;
+    estado: string;
     departamento: DepartamentoDTO;
 }

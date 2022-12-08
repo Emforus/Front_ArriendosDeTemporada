@@ -20,7 +20,7 @@
                     <mat-error>{{hasError('nombreUsuario')?.error}}</mat-error>
                 </mat-form-field>
                 <mat-form-field style="margin-top: 10px;">
-                    <mat-label>Correo electronico</mat-label>
+                    <mat-label>Correo electrónico</mat-label>
                     <input formControlName="email" [(ngModel)]="user.email" matInput placeholder="Email">
                     <mat-error>{{hasError('email')?.error}}</mat-error>
                 </mat-form-field>
@@ -33,9 +33,9 @@
                     </mat-select>
                     <mat-error>{{hasError('rol')?.error}}</mat-error>
                 </mat-form-field>
-                <div fxLayoutAlign="center center" class="button-row" style="margin-top: 3%;">
-                    <button mat-raised-button class="confirm" (click)="editar()">Confirmar</button>
+                <div fxLayoutAlign="center center" class="button-row" style="margin-top: 3%;" fxLayoutGap="20px">
                     <button mat-raised-button class="cancel" (click)="close()">Cancelar</button>
+                    <button mat-raised-button class="confirm" (click)="editar()">Confirmar</button>
                 </div>
             </div>
         </form>

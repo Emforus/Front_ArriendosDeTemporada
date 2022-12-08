@@ -7,7 +7,7 @@
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html" class="logo me-auto me-lg-0"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
         
-        <nav id="navbar" class="navbar order-last order-lg-0">
+        <nav fxFlex.lt-md="0" id="navbar" class="navbar order-last order-lg-0">
           <ul>
             <li><a class="nav-link scrollto " routerLink="/home">Inicio</a></li>
             <!-- <li><a class="nav-link scrollto" >Nosotros</a></li>
@@ -38,19 +38,63 @@
             <ng-container *ngIf="authenticated && rol=='Admin'">
               <li><a class="nav-link scrollto " routerLink="/admin">Administración</a></li>
             </ng-container>
+            <ng-container *ngIf="authenticated && (rol=='Admin' || rol=='Recepcionista')">
+              <li><a class="nav-link scrollto " routerLink="/recepcion">Recepción</a></li>
+            </ng-container>
           </ul>
-          <i class="bi bi-list mobile-nav-toggle"></i>
+          <i [hidden]="true" class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->
+        <div style="width: 15%; min-width: 15%;" *ngIf="!isHandset()">
+          <ng-container *ngIf="!authenticated; else profile">
+            <!-- <a routerLink="/login" class="get-started-btn scrollto">Iniciar Sesion</a> -->
+            <button mat-button class="button login" routerLink="/login">
+              <div fxLayoutAlign="center center" *ngIf="!isHandset()">
+                <mat-icon>exit_to_app</mat-icon>Iniciar sesión
+              </div>
+              <mat-icon *ngIf="isHandset()">exit_to_app</mat-icon>
+            </button>
+          </ng-container>
+          <ng-template #profile>
+            <ng-container *ngIf="rol == 'Cliente'; else recepcion">
+              <button mat-button class="button profile" (click)="logout()">
+                <mat-icon>person</mat-icon>
+              </button>
+            </ng-container>
+          </ng-template>
+          <ng-template #recepcion>
+            <ng-container *ngIf="rol == 'Recepcionista'; else adm">
+              <button mat-button class="button recepcion" (click)="logout()">
+                <mat-icon>hotel</mat-icon>
+              </button>
+            </ng-container>
+          </ng-template>
+          <ng-template #adm>
+            <button mat-button class="button admin" (click)="logout()">
+              <mat-icon>visibility</mat-icon>
+            </button>
+          </ng-template>
+        </div>
+      <div *ngIf="isHandset()" fxLayout="row" fxFlex="40" fxFlexOffset="15" fxLayoutAlign="end">
         <ng-container *ngIf="!authenticated; else profile">
           <!-- <a routerLink="/login" class="get-started-btn scrollto">Iniciar Sesion</a> -->
           <button mat-button class="button login" routerLink="/login">
-            Iniciar Sesión
+            <div fxLayoutAlign="center center" *ngIf="!isHandset()">
+              <mat-icon>exit_to_app</mat-icon>Iniciar sesión
+            </div>
+            <mat-icon *ngIf="isHandset()">exit_to_app</mat-icon>
           </button>
         </ng-container>
         <ng-template #profile>
-          <ng-container *ngIf="rol != 'Admin'; else adm">
+          <ng-container *ngIf="rol == 'Cliente'; else recepcion">
             <button mat-button class="button profile" (click)="logout()">
               <mat-icon>person</mat-icon>
+            </button>
+          </ng-container>
+        </ng-template>
+        <ng-template #recepcion>
+          <ng-container *ngIf="rol == 'Recepcionista'; else adm">
+            <button mat-button class="button recepcion" (click)="logout()">
+              <mat-icon>hotel</mat-icon>
             </button>
           </ng-container>
         </ng-template>
@@ -59,6 +103,23 @@
             <mat-icon>visibility</mat-icon>
           </button>
         </ng-template>
+        <div *ngIf="isHandset()" fxLayoutAlign="end">
+          <button style="padding-top: 5px;" mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>menu</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <a class="nav-link scrollto " routerLink="/home">Inicio</a>
+            </button>
+            <button mat-menu-item>
+              <a class="nav-link scrollto" routerLink="/departamentos">Departamentos</a>
+            </button>
+            <button mat-menu-item>
+              <a class="nav-link scrollto">Contáctanos</a>
+            </button>
+          </mat-menu>
+        </div>
+      </div>
       </div>
     </div>
 

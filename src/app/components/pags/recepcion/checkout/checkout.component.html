@@ -1,0 +1,48 @@
+<div class="spacer">
+
+</div>
+<div class="container">
+    <mat-card class="title-box mt-elevation-z2">
+        <h4 class="title" fxLayoutAlign="center center" >Check-Out</h4>
+    </mat-card>
+    <div fxFill fxLayout="row">
+        <div fxFlex="60">
+            <p>
+                <strong>Fecha realización de la reserva</strong><span>{{formatDate(factura.fechaHoraGeneracion)}}</span><br/>
+                <strong>Fecha de inicio</strong><span>{{formatDate(factura.fechaHoraReserva)}}</span><br/>
+                <br/>
+                <strong>Duración de la estadía</strong><span>{{factura.duracion}} días</span><br/>
+                <strong>Valor por día</strong><span>{{formatter.format(factura.departamento.valorBase)}}</span><br/>
+                <br/>
+                <strong>Costo base de la reserva</strong><span>{{formatter.format(factura.departamento.valorBase*factura.duracion)}}</span><br/>
+                <strong>Valor IVA</strong><span>{{formatter.format(factura.valorIVA)}}</span><br/>
+                <strong>Recargo por servicios extra</strong><span>{{formatter.format(factura.valorServicios)}}</span><br/>
+                <mat-divider style="color: black; background-color: black;"></mat-divider>
+                <strong>Valor total de la reserva</strong><span>{{formatter.format(factura.valor)}}</span><br/>
+                <strong>Valor deposito inicial</strong><span>{{formatter.format(factura.valorDeposito)}}</span><br/>
+                <strong>Total a pagar por check-in</strong><span>{{formatter.format(factura.valor-factura.valorDeposito)}}</span><br/>
+                <strong></strong><span></span><br/>
+            </p>
+        </div>
+        <div fxFlex="40">
+            <form [formGroup]="form">
+                <div class="form-container">
+                    <mat-form-field appearance="fill" style="margin-top: 30px;">
+                        <mat-label>Nombre del cliente</mat-label>
+                        <input formControlName="nombreUsuario" matInput placeholder="Nombre del cliente">
+                        <mat-error>{{hasError('nombreUsuario')?.error}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" style="margin-top: 10px;">
+                        <mat-label>Correo electrónico</mat-label>
+                        <input formControlName="email" matInput placeholder="Email">
+                        <mat-error>{{hasError('email')?.error}}</mat-error>
+                    </mat-form-field>
+                    <div fxLayoutAlign="center center" class="button-row" style="margin-top: 3%;" fxLayoutGap="20px">
+                        <button mat-raised-button class="cancel" (click)="close()">Cancelar</button>
+                        <button mat-raised-button class="confirm" (click)="checkOut()">Confirmar salida</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

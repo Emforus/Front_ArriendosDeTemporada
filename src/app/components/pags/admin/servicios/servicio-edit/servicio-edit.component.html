@@ -1,0 +1,56 @@
+<mat-toolbar>
+    <span class="title-component">Registrar servicio</span>
+    <span class="fill-remaining-space"></span>
+    <button class="btn-dialog-close" mat-stroked-button (click)="close()" tabindex="-1">
+        <mat-icon>clear</mat-icon>
+    </button>
+</mat-toolbar>
+<div class="container">
+    <div>
+        <form [formGroup]="form">
+            <div class="form-container">
+                <mat-form-field style="margin-top: 30px;">
+                    <mat-label>Nombre</mat-label>
+                    <input formControlName="nombre" [(ngModel)]="svc.nombre" matInput placeholder="Nombre del servicio">
+                    <mat-error>{{hasError('nombre')?.error}}</mat-error>
+                </mat-form-field>
+                <mat-form-field style="margin-top: 10px;">
+                    <mat-label>Descripción</mat-label>
+                    <input formControlName="descripcion" [(ngModel)]="svc.descripcion" matInput placeholder="Descripción">
+                    <mat-error>{{hasError('descripcion')?.error}}</mat-error>
+                </mat-form-field>
+                <mat-form-field style="margin-top: 10px;">
+                    <mat-label>Costo</mat-label>
+                    <input type="number" formControlName="costoServicio" [(ngModel)]="svc.costoServicio" matInput placeholder="Costo del servicio">
+                    <mat-error>{{hasError('costoServicio')?.error}}</mat-error>
+                </mat-form-field>
+                <div fxLayout="grow" fxLayoutAlign="center center" style="margin-top: 10px;">
+                    <div>
+                        <mat-checkbox [(ngModel)]="svc.servicioUnitario" [ngModelOptions]="{standalone:true}">¿Servicio individual?</mat-checkbox>
+                        <h6 style="font-size: 12px; font-weight: lighter; color: #66758f;">¿Varía el costo acorde al número de clientes?</h6>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center " style="margin-top: 10px; width: 85%;">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Fecha de contratación</mat-label>
+                        <input formControlName="fechaContrato" matInput [matDatepicker]="fecc">
+                        <mat-hint>DD/MM/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="fecc"></mat-datepicker-toggle>
+                        <mat-datepicker #fecc></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Fecha de expiración</mat-label>
+                        <input formControlName="fechaExpiracion" [min]="defaultMinimo" matInput [matDatepicker]="fechaExpiracion">
+                        <mat-hint>DD/MM/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="fechaExpiracion"></mat-datepicker-toggle>
+                        <mat-datepicker #fechaExpiracion></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxLayoutAlign="center center" class="button-row" style="margin-top: 3%;" fxLayoutGap="20px">
+                    <button mat-raised-button class="cancel" (click)="close()">Cancelar</button>
+                    <button mat-raised-button class="confirm" (click)="editar()">Confirmar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

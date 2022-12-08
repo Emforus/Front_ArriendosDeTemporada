@@ -72,24 +72,24 @@ export class ReservasComponent implements OnInit {
     this.cancelled = []
     this.completed = []
     data.forEach((item: Factura) => {
-      console.log(item.id)
+      this._ajustarValor(item)
       switch (item.estado) {
         case "Pendiente":
           this.pending.push(item)
-          console.log(item.id+" pendiente")
           break;
         case "Cancelada":
           this.cancelled.push(item)
-          console.log(item.id+" cancelada")
           break;
         case "Completada":
           this.completed.push(item)
-          console.log(item.id+" completada")
           break;
         default:
           break;
       }
     });
+    this.pending.sort((a,b)=> a.id-b.id)
+    this.cancelled.sort((a,b)=> a.id-b.id)
+    this.completed.sort((a,b)=> a.id-b.id)
   }
 
   padTo2Digits(num: number) {
@@ -99,6 +99,9 @@ export class ReservasComponent implements OnInit {
   dialogOpen() {
     return (this.dialog.openDialogs.length == 0)
   }
+  trackByFn(index: any, item: any) {
+    return index;
+  }
 
   formatDate(date: Date) {
     date = new Date(date);
@@ -107,6 +110,13 @@ export class ReservasComponent implements OnInit {
       this.padTo2Digits(date.getMonth() + 1),
       date.getFullYear(),
     ].join('/');
+  }
+
+  //funcion temporal, ajusta valor por el cambio en la db
+  _ajustarValor(fac: Factura) {
+    if (fac.valor == 0) {
+      fac.valor = (fac.departamento.valorBase*fac.duracion)+fac.valorIVA
+    }
   }
 
   detail(element: any) {
@@ -125,6 +135,7 @@ export class ReservasComponent implements OnInit {
     this.depto.fotografias = element.fotografias;
     this.depto.utilidades = element.utilidades;
     this.depto.facturas = element.facturas;
+    this.depto.serviciosPrincipales = element.serviciosPrincipales
 
     this.dialog.open(DetalleDepartamentoComponent, {
       height: '95%',

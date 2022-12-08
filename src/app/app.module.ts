@@ -65,11 +65,22 @@ import { MatPaginatorImpl } from './components/_services/mat-paginator';
 import { DetalleDepartamentoComponent } from './components/pags/departamentos/detalle-departamento/detalle-departamento.component';
 import { ReservasComponent } from './components/pags/reservas/reservas.component';
 import { EstadisticasComponent } from './components/pags/admin/estadisticas/estadisticas.component';
+import { EstadisticasDetalleMesComponent } from './components/pags/admin/estadisticas/estadisticas-detalle-mes/estadisticas-detalle-mes.component';
+import { RecepcionComponent } from './components/pags/recepcion/recepcion.component';
+import { CheckinComponent } from './components/pags/recepcion/checkin/checkin.component';
+import { CheckoutComponent } from './components/pags/recepcion/checkout/checkout.component';
+
+import * as CanvasJSAngularChart from 'src/canvasjs.angular.component';
+import { ServiciosComponent } from './components/pags/admin/servicios/servicios.component';
+import { ServicioDetailComponent } from './components/pags/admin/servicios/servicio-detail/servicio-detail.component';
+import { ServicioEditComponent } from './components/pags/admin/servicios/servicio-edit/servicio-edit.component';
+var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    CanvasJSChart,
     LoginComponent,
     RegistroComponent,
     DepartamentosComponent,
@@ -91,7 +102,14 @@ import { EstadisticasComponent } from './components/pags/admin/estadisticas/esta
     DeptoEditComponent,
     DetalleDepartamentoComponent,
     ReservasComponent,
-    EstadisticasComponent  
+    EstadisticasComponent,
+    EstadisticasDetalleMesComponent,
+    RecepcionComponent,
+    CheckinComponent,
+    CheckoutComponent,
+    ServiciosComponent,
+    ServicioDetailComponent,
+    ServicioEditComponent
   ],
   imports: [
     BrowserModule,

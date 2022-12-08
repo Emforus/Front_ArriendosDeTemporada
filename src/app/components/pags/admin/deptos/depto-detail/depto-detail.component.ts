@@ -8,6 +8,7 @@ import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confir
 import { AuthUtil } from 'src/app/components/_models/auth.util';
 import { Departamento } from 'src/app/components/_models/departamento';
 import { Factura } from 'src/app/components/_models/factura';
+import { Utilidad } from 'src/app/components/_models/utilidad';
 import { BookingService } from 'src/app/components/_services/booking.service';
 import { DeptoService } from 'src/app/components/_services/depto.service';
 import { LoaderService } from 'src/app/components/_services/loader.service';
@@ -21,18 +22,19 @@ import { LoginService } from 'src/app/components/_services/login.service';
 export class DeptoDetailComponent implements OnInit {
 
 
-  formatter = new Intl.NumberFormat('CL', {
-    style: 'currency',
-    currency: 'CLP'
-  })
+    formatter = new Intl.NumberFormat('CL', {
+      style: 'currency',
+      currency: 'CLP'
+    })
     //@ts-ignore
     depto: Departamento;
     curimg: number = 0;
     facturas: Factura[] = new Array()
     curUser: AuthUtil = new AuthUtil()
     
-    displayedColumns = ['id', 'estado']
+    displayedColumns = ['id', 'email', 'estado']
     dataSource!: MatTableDataSource<Factura>;
+    inventario!: MatTableDataSource<Utilidad>;
   
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild(MatSort) sort!: MatSort;
@@ -77,6 +79,14 @@ export class DeptoDetailComponent implements OnInit {
         this.dataSource.sort = this.sort
         this.dataSource.paginator = this.paginator
       })
+      // this.departamentoService.getUtilidades(this.depto.idDepartamento).subscribe((data: any) => {
+      //   this.inventario = new MatTableDataSource(data);
+      //   this.inventario.sort = this.sort
+      //   this.inventario.paginator = this.paginator
+      // })
+      this.inventario = new MatTableDataSource(this.depto.utilidades)
+      this.inventario.sort = this.sort
+      this.inventario.paginator = this.paginator
       this.cdr.detectChanges();
     }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Departamento } from 'src/app/components/_models/departamento';
+import { Utilidad } from 'src/app/components/_models/utilidad';
 import { DeptoService } from 'src/app/components/_services/depto.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -76,7 +77,10 @@ export class DeptosComponent implements OnInit {
     this.depto.fotografias = element.fotografias;
     this.depto.utilidades = element.utilidades;
     this.depto.facturas = element.facturas;
-    this.depto.serviciosPrincipales = element.serviciosPrincipales
+    this.depto.serviciosPrincipales = element.serviciosPrincipales;
+    this.depto.serviciosDisponibles = element.serviciosDisponibles;
+
+    console.log(element)
 
     this.dialog.open(DeptoDetailComponent, {
       height: '95%',
@@ -87,6 +91,7 @@ export class DeptosComponent implements OnInit {
   }
 
   edit(element: any) {
+    console.log(element)
     this.depto = new Departamento();
     this.depto.idDepartamento = element.idDepartamento;
     this.depto.descripcionDepartamento = element.descripcionDepartamento;
@@ -102,7 +107,19 @@ export class DeptosComponent implements OnInit {
     this.depto.fotografias = element.fotografias;
     this.depto.utilidades = element.utilidades;
     this.depto.facturas = element.facturas;
-    this.depto.serviciosPrincipales = element.serviciosPrincipales
+    this.depto.serviciosPrincipales = element.serviciosPrincipales;
+    this.depto.serviciosDisponibles = element.serviciosDisponibles;
+
+    this.dialog.open(DeptoEditComponent, {
+      height: '95%',
+      width: '75%',
+      autoFocus: false,
+      data: this.depto
+    })
+  }
+
+  create() {
+    this.depto = new Departamento();
 
     this.dialog.open(DeptoEditComponent, {
       height: '95%',

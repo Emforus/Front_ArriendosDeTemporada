@@ -6,6 +6,8 @@ import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confir
 import { LoaderService } from 'src/app/components/_services/loader.service';
 import { DeptoService } from 'src/app/components/_services/depto.service';
 import { ServicioGenerico } from 'src/app/components/_models/servicio.generico';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 
 @Component({
@@ -24,6 +26,10 @@ export class DetalleDepartamentoComponent implements OnInit {
     //@ts-ignore
     servicios: ServicioGenerico;
     curimg: number = 0;
+
+    
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+    @ViewChild(MatSort) sort!: MatSort;
   
     constructor(
       private dialogRef: MatDialogRef<DetalleDepartamentoComponent>,
@@ -49,12 +55,11 @@ export class DetalleDepartamentoComponent implements OnInit {
       this.depto.estadoLogico = this.data.estadoLogico;
       this.depto.fotografias = this.data.fotografias;
       this.depto.serviciosPrincipales = this.data.serviciosPrincipales;
-      this.servicios = new ServicioGenerico;
-      this.servicios = this.data.serviciosPrincipales;
+      this.depto.serviciosDisponibles = this.data.serviciosDisponibles;
       this.depto.utilidades = this.data.utilidades;
       this.depto.facturas = this.data.facturas;
 
-      console.log(this.servicios.hasWifi)
+      console.log(this.data.serviciosDisponibles)
   
       this.cdr.detectChanges();
     }

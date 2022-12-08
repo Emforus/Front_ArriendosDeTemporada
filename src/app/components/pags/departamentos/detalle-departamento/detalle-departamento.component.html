@@ -41,38 +41,40 @@
                     <div *ngIf="depto.serviciosPrincipales === null" fxLayout="row" style="margin: 20px 0 20px 20px;">
                         El departamento no tiene servicios principales registrados.
                     </div>
-                    <div *ngIf="depto.serviciosPrincipales != undefined" fxLayout="row wrap" style="margin: 20px 0 20px 20px;">
-                        <div class="icon-container" >
-                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasWifi)">wifi</mat-icon><br/>
-                            Wi-Fi
-                        </div>
-                        <div class="icon-container">
-                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasPool)">pool</mat-icon><br/>
-                            Piscina
-                        </div>
-                        <div class="icon-container">
-                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasAC)">ac_unit</mat-icon><br/>
-                            AC
-                        </div>
-                        <div class="icon-container">
-                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasElevator)">unfold_more</mat-icon><br/>
-                            Ascensor
-                        </div>
-                        <div class="icon-container">
-                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasParking)">local_parking</mat-icon><br/>
-                            Estacionamiento
-                        </div>
-                        <div class="icon-container">
-                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.allowsPets)">pets</mat-icon><br/>
-                            Mascotas
-                        </div>
-                        <div class="icon-container">
-                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.allowsChildren)">child_friendly</mat-icon><br/>
-                            Niños
-                        </div>
-                        <div class="icon-container">
-                            <mat-icon [style.color]="getColor(depto.serviciosPrincipales.isWheelchairAccessible)">accessible</mat-icon><br/>
-                            Accesibilidad
+                    <div *ngIf="depto.serviciosPrincipales != undefined" fxLayout="column" style="margin: 20px 0 20px 20px;">
+                        <div fxLayout="row wrap">
+                            <div class="icon-container" >
+                                <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasWifi)">wifi</mat-icon><br/>
+                                Wi-Fi
+                            </div>
+                            <div class="icon-container">
+                                <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasPool)">pool</mat-icon><br/>
+                                Piscina
+                            </div>
+                            <div class="icon-container">
+                                <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasAC)">ac_unit</mat-icon><br/>
+                                AC
+                            </div>
+                            <div class="icon-container">
+                                <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasElevator)">unfold_more</mat-icon><br/>
+                                Ascensor
+                            </div>
+                            <div class="icon-container">
+                                <mat-icon [style.color]="getColor(depto.serviciosPrincipales.hasParking)">local_parking</mat-icon><br/>
+                                Estacionamiento
+                            </div>
+                            <div class="icon-container">
+                                <mat-icon [style.color]="getColor(depto.serviciosPrincipales.allowsPets)">pets</mat-icon><br/>
+                                Mascotas
+                            </div>
+                            <div class="icon-container">
+                                <mat-icon [style.color]="getColor(depto.serviciosPrincipales.allowsChildren)">child_friendly</mat-icon><br/>
+                                Niños
+                            </div>
+                            <div class="icon-container">
+                                <mat-icon [style.color]="getColor(depto.serviciosPrincipales.isWheelchairAccessible)">accessible</mat-icon><br/>
+                                Accesibilidad
+                            </div>
                         </div>
                         <div fxLayout="column" *ngIf="depto.serviciosPrincipales.otherServices!=null && depto.serviciosPrincipales.otherServices.length!=0">
                             <h6 style="margin-top: 10px;">Otros servicios</h6>
@@ -83,6 +85,33 @@
                             </ul>
                         </div>
                     </div>
+                </mat-tab>
+                <mat-tab label="Servicios complementarios">
+                    <mat-card class="table-box mt-elevation-z2">
+                        <div class="table" [hidden]="(loaderService.visibility | async)">
+                            <mat-table [dataSource]="depto.serviciosDisponibles" matSort>
+                                <ng-container matColumnDef="nombre">
+                                    <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">{{row.servicio.nombre}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="descripcion">
+                                    <mat-header-cell *matHeaderCellDef>Descripción</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">{{row.servicio.descripcion}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="valor">
+                                    <mat-header-cell *matHeaderCellDef>Valor</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">{{formatter.format(row.servicio.costoServicio)}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="facturacion">
+                                    <mat-header-cell *matHeaderCellDef>Tipo de facturación</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">{{row.servicio.servicioUnitario?'Individual (Pago por huésped)':'Grupal (Pago único)'}}</mat-cell>
+                                </ng-container>
+                                <mat-header-row *matHeaderRowDef="['nombre', 'descripcion', 'valor', 'facturacion']"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: ['nombre', 'descripcion', 'valor', 'facturacion']"></mat-row>
+                            </mat-table>
+                            <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10, 15,25]" [length]="depto.serviciosDisponibles.length"></mat-paginator>
+                        </div>
+                    </mat-card>
                 </mat-tab>
              </mat-tab-group>
         </div>

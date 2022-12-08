@@ -6,6 +6,15 @@
     color: white !important;
     z-index: 99;
 }
+mat-menu>button{
+    position: relative;
+    white-space: nowrap;
+}
+button>a{
+    display: inline-block;
+    text-decoration: none;
+    color: black;
+}
 .profile{
     border: solid;
     background-color: #009961;
@@ -17,7 +26,7 @@
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 20px;
-    width: 15%;
+    width: 100%;
     z-index: 99;
 }
 .admin{
@@ -31,7 +40,21 @@
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 20px;
-    width: 15%;
+    width: 100%;
+    z-index: 99;
+}
+.recepcion{
+    border: solid;
+    background-color: #004cb7;
+    border-color: #000794;
+    padding: 0px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 20px;
+    width: 100%;
     z-index: 99;
 }
 .login{
@@ -47,6 +70,6 @@
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 20px;
-    width: 15%;
+    width: 100%;
     z-index: 99;
 }

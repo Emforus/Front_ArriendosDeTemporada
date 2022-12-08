@@ -84,26 +84,58 @@
                         </div>
                     </div>
                 </mat-tab>
-                <mat-tab label="Facturas"><mat-card class="table-box mt-elevation-z2">
-                    <div fxLayout="row" style="padding-bottom: 20px;" class="example-header" *ngIf="dialogOpen() && (loaderService.visibility | async)">
-                        <mat-spinner style="margin: auto;" mode="indeterminate" [diameter]="100"></mat-spinner>
-                    </div>
-                    <div class="table" [hidden]="dialogOpen() && (loaderService.visibility | async)">
-                        <mat-table [dataSource]="dataSource" matSort>
-                            <ng-container matColumnDef="id">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-                                <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="estado">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Estado actual</mat-header-cell>
-                                <mat-cell *matCellDef="let row">{{row.estado}}</mat-cell>
-                            </ng-container>
-                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-                        </mat-table>
-                        <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10, 15,25]"></mat-paginator>
-                    </div>
-                </mat-card>
+                <mat-tab label="Facturas">
+                    <mat-card class="table-box mt-elevation-z2">
+                        <div fxLayout="row" style="padding-bottom: 20px;" class="example-header" *ngIf="dialogOpen() && (loaderService.visibility | async)">
+                            <mat-spinner style="margin: auto;" mode="indeterminate" [diameter]="100"></mat-spinner>
+                        </div>
+                        <div class="table" [hidden]="dialogOpen() && (loaderService.visibility | async)">
+                            <mat-table [dataSource]="dataSource" matSort>
+                                <ng-container matColumnDef="id">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="email">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Correo electrónico</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">{{row.usuario.email}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="estado">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Estado actual</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">{{row.estado}}</mat-cell>
+                                </ng-container>
+                                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                            </mat-table>
+                            <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10, 15,25]"></mat-paginator>
+                        </div>
+                    </mat-card>
+                </mat-tab>
+                <mat-tab label="Inventario">
+                    <mat-card class="table-box mt-elevation-z2">
+                        <div class="table" [hidden]="dialogOpen() && (loaderService.visibility | async)">
+                            <mat-table [dataSource]="inventario" matSort>
+                                <ng-container matColumnDef="id">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="nombre">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">{{row.nombre}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="descripcion">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">{{row.descripcion}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="valor">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Valor</mat-header-cell>
+                                    <mat-cell *matCellDef="let row">{{formatter.format(row.valor)}}</mat-cell>
+                                </ng-container>
+                                <mat-header-row *matHeaderRowDef="['id', 'nombre', 'descripcion', 'valor']"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: ['id', 'nombre', 'descripcion', 'valor']"></mat-row>
+                            </mat-table>
+                            <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10, 15,25]"></mat-paginator>
+                        </div>
+                    </mat-card>
                 </mat-tab>
             </mat-tab-group>
             
@@ -111,7 +143,7 @@
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px" style="margin-top: 50px; text-align: center; margin: auto;">
             <button [disabled]="(depto.estadoLogico)" mat-raised-button class="enable" (click)="enable()">Habilitar</button>
             <button [disabled]="!(depto.estadoLogico)" mat-raised-button class="disable" (click)="disable()">Deshabilitar</button>
-            <button mat-raised-button class="delete" (click)="delete()">Eliminar</button>
+            <!-- <button mat-raised-button class="delete" (click)="delete()">Eliminar</button> -->
         </div>
 
     </div> 

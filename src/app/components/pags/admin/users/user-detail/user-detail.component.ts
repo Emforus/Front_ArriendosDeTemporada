@@ -48,7 +48,7 @@ export class UserDetailComponent implements OnInit {
 
   enable() {
     this.dialog.open(ConfirmDialogComponent, {
-      data: {mensaje: 'Esta seguro de que desea habilitar este usuario?', accion: 'habilitar'}
+      data: {mensaje: '¿Está seguro de que desea habilitar este usuario?', accion: 'habilitar'}
     }).afterClosed().subscribe((response: {status: boolean}) => {
       if (response.status) {
         this.userService.setEstadoUsuario(this.user.id).pipe(switchMap( ()=> {
@@ -63,7 +63,7 @@ export class UserDetailComponent implements OnInit {
 
   disable() {
     this.dialog.open(ConfirmDialogComponent, {
-      data: {mensaje: 'Esta seguro de que desea deshabilitar este usuario?', accion: 'deshabilitar'}
+      data: {mensaje: '¿Está seguro de que desea deshabilitar este usuario?', accion: 'deshabilitar'}
     }).afterClosed().subscribe((response: {status: boolean}) => {
       if (response.status) {
         this.userService.setEstadoUsuario(this.user.id).pipe(switchMap( ()=> {
@@ -78,7 +78,7 @@ export class UserDetailComponent implements OnInit {
 
   delete() {
     this.dialog.open(ConfirmDialogComponent, {
-      data: {mensaje: '[IMPORTANTE] Esta a punto de eliminar esta cuenta, esta accion no se puede deshacer. Esta seguro?', accion: 'eliminar'}
+      data: {mensaje: '[IMPORTANTE] Está a punto de eliminar esta cuenta, esta accion no se puede deshacer. ¿Está seguro?', accion: 'eliminar'}
     }).afterClosed().subscribe((response: {status: boolean}) => {
       if (response.status) {
         this.userService.eliminar(this.user.id).pipe(switchMap( ()=> {

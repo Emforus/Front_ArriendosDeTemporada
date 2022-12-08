@@ -1,0 +1,47 @@
+.spacer{
+    margin-top: 0;
+    height: 75px;
+    width: 10px;
+    margin-bottom: 0;
+}
+.container{
+    display: flex;
+    width: 95%;
+    flex-direction: column;
+}
+.title-box{
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+p {
+    margin: 20px 0 20px 20px;
+    color: #000000;
+    font-size: 18px;
+    line-height: 1.5em;
+}
+strong {
+    color: #007245;
+    margin-right: 2px;
+}
+p span {
+    float: right;
+    text-align: right;
+    clear: both;
+    max-width: 72%;
+}
+mat-form-field{
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 5px;
+    font-size: 14px;
+}
+.confirm{
+    background-color: #6f74dd;
+    color: white;
+}
+.cancel{
+    background-color: #fd3939;
+    color: white;
+}

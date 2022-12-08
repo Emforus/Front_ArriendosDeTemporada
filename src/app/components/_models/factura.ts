@@ -1,5 +1,6 @@
 //@ts-nocheck
 import { Departamento } from "./departamento";
+import { ServicioFactura } from "./join.servicio.factura";
 import { Usuario } from "./usuario";
 
 export class Factura {
@@ -10,9 +11,12 @@ export class Factura {
     fechaHoraReserva: Date;
     duracion: number;
     estado: string;
+    valor: number;
     valorIVA: number;
-    valorTotal: number;
+    valorDeposito: number;
+    valorServicios: number;
     cantidadClientes: number;
     usuario: Usuario;
     departamento: Departamento;
+    serviciosPorFactura: ServicioFactura[];
 }

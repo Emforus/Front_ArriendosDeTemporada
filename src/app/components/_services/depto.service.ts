@@ -4,6 +4,7 @@ import { Departamento } from '../_models/departamento';
 import { Subject } from 'rxjs';
 import { GenericService } from './generic.service';
 import { Factura } from '../_models/factura';
+import { Utilidad } from '../_models/utilidad';
 
 @Injectable({
     providedIn: 'root'
@@ -47,6 +48,28 @@ export class DeptoService extends GenericService<Departamento> {
 
     setEstadoDepartamento(id: number) {
         return this.http.get(`${this.url}/${id}/disable`)
+    }
+
+    getUtilidades(id: number) {
+        return this.http.get(`${this.url}/${id}/utilidades`)
+    }
+
+    addUtilidades(utils: Utilidad[], id: number) {
+        const httpHeaders = new HttpHeaders({
+            'Content-Type':'application/json'
+        })
+
+        let response = this.http.post(`${this.url}/${id}/utilidades`, utils, {headers: httpHeaders});
+        return response
+    }
+
+    removeUtilidades(utils: Utilidad[], id: number) {
+        const httpHeaders = new HttpHeaders({
+            'Content-Type':'application/json'
+        })
+
+        let response = this.http.put(`${this.url}/${id}/utilidades`, utils, {headers: httpHeaders});
+        return response
     }
 
     getChange(){

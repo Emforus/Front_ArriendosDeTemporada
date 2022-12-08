@@ -35,7 +35,7 @@
               <br/>
               <strong>Valor por día</strong><span>{{formatter.format(res.departamento.valorBase)}}</span><br/>
               <strong>Valor IVA</strong><span>{{formatter.format(res.valorIVA)}}</span><br/>
-              <strong>Valor total de la reserva</strong><span>{{formatter.format(res.valorTotal)}}</span><br/>
+              <strong>Valor total de la reserva</strong><span>{{formatter.format(res.valor)}}</span><br/>
               <strong></strong><span></span><br/>
             </p>
           </div>
@@ -65,11 +65,26 @@
           <div [hidden]="dialogOpen() && (loaderService.visibility | async) ">
             <ng-container *ngFor="let res of completed; index as i">
               <div fxLayout="row" class="title-row">
-                {{res.departamento.ubicacionDepartamento}}
+                {{res.departamento.ubicacionDepartamento+" - ID: "+res.id}}
               </div>
               <div fxLayout="row" fxLayoutGap="1rem" class="depto-row">
                 <div fxFlex="20" fxLayoutAlign="center center">
                   <img [src]="'assets/img/deptos/'+res.departamento.fotografias[0]" class="img-fluid img-list" alt=""/>
+                </div>
+                <div fxFlex="80">
+                  <p>
+                    <strong>Fecha de inicio</strong><span>{{formatDate(res.fechaHoraReserva)}}</span><br/>
+                    <strong>Duración de la estadía</strong><span>{{res.duracion}} días</span><br/>
+                    <br/>
+                    <strong>Valor por día</strong><span>{{formatter.format(res.departamento.valorBase)}}</span><br/>
+                    <strong>Valor IVA</strong><span>{{formatter.format(res.valorIVA)}}</span><br/>
+                    <strong>Valor total de la reserva</strong><span>{{formatter.format(res.valor)}}</span><br/>
+                    <strong></strong><span></span><br/>
+                  </p>
+                </div>
+                <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center" fxFlex="20">
+                  <button mat-raised-button class="observe" style="width: 110px;" (click)="detail(res.departamento)">Ver Detalles</button>
+                  <!-- <button mat-raised-button class="delete" style="width: 110px;" (click)="cancel(res)">Anular</button> -->
                 </div>
               </div>
             </ng-container>
@@ -77,13 +92,28 @@
         </mat-tab>
         <mat-tab label="Reservas canceladas">
           <div [hidden]="dialogOpen() && (loaderService.visibility | async) ">
-            <ng-container *ngFor="let res of cancelled; index as i">
+            <ng-container *ngFor="let res of cancelled; index as i;trackBy: trackByFn">
               <div fxLayout="row" class="title-row">
-                {{res.departamento.ubicacionDepartamento}}
+                {{res.departamento.ubicacionDepartamento+" - ID: "+res.id}}
               </div>
               <div fxLayout="row" fxLayoutGap="1rem" class="depto-row">
                 <div fxFlex="20" fxLayoutAlign="center center">
                   <img [src]="'assets/img/deptos/'+res.departamento.fotografias[0]" class="img-fluid img-list" alt=""/>
+                </div>
+                <div fxFlex="80">
+                  <p>
+                    <strong>Fecha de inicio</strong><span>{{formatDate(res.fechaHoraReserva)}}</span><br/>
+                    <strong>Duración de la estadía</strong><span>{{res.duracion}} días</span><br/>
+                    <br/>
+                    <strong>Valor por día</strong><span>{{formatter.format(res.departamento.valorBase)}}</span><br/>
+                    <strong>Valor IVA</strong><span>{{formatter.format(res.valorIVA)}}</span><br/>
+                    <strong>Valor total de la reserva</strong><span>{{formatter.format(res.valor)}}</span><br/>
+                    <strong></strong><span></span><br/>
+                  </p>
+                </div>
+                <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center" fxFlex="20">
+                  <button mat-raised-button class="observe" style="width: 110px;" (click)="detail(res.departamento)">Ver Detalles</button>
+                  <!-- <button mat-raised-button class="delete" style="width: 110px;" (click)="cancel(res)">Anular</button> -->
                 </div>
               </div>
             </ng-container>

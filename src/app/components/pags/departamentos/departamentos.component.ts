@@ -62,6 +62,7 @@ export class DepartamentosComponent implements OnInit {
     this.depto.serviciosPrincipales = element.serviciosPrincipales;
     this.depto.utilidades = element.utilidades;
     this.depto.facturas = element.facturas;
+    this.depto.serviciosDisponibles = element.serviciosDisponibles;
 
     this.dialog.open(DetalleDepartamentoComponent, {
       height: '95%',
@@ -88,6 +89,7 @@ export class DepartamentosComponent implements OnInit {
     this.depto.serviciosPrincipales = element.servicios;
     this.depto.utilidades = element.utilidades;
     this.depto.facturas = element.facturas;
+    this.depto.serviciosDisponibles = element.serviciosDisponibles;
 
     this.dialog.open(ArriendoComponent, {
       height: '95%',

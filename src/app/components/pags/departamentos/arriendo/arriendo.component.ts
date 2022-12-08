@@ -10,6 +10,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { LoginService } from 'src/app/components/_services/login.service';
 import { Usuario } from 'src/app/components/_models/usuario';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ServicioFactura } from 'src/app/components/_models/join.servicio.factura';
 
 declare var paypal: any;
 
@@ -32,9 +34,6 @@ export class ArriendoComponent implements OnInit {
   factura: Factura = new Factura();
   //@ts-ignore
   user: Usuario = new Usuario();
-  duracion: number = 0;
-  iva: number = 0;
-  deposito: number = 0;
   fechaMinima: Date = new Date();
   fechaMaxima: Date = new Date();
   filtro: any;
@@ -43,6 +42,12 @@ export class ArriendoComponent implements OnInit {
   @ViewChild('paypal', {static: true}) paypalElement: ElementRef;
 
   
+  duracion: number = 0;
+  servicios: number = 0;  //valor por servicios extra
+  subtotal: number = 0;   //(duracion*base)+servicios
+  iva: number = 0;        //19% del subtotal
+  total: number = 0;      //costo final de arriendo
+  deposito: number = 0;   //20% del total
 
   arriendo = { 
     desc: 'Departamento a arrendar',
@@ -58,7 +63,8 @@ export class ArriendoComponent implements OnInit {
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
     public loaderService: LoaderService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -84,6 +90,8 @@ export class ArriendoComponent implements OnInit {
     this.depto.fotografias = this.data.fotografias;
     this.depto.utilidades = this.data.utilidades;
     this.depto.facturas = this.data.facturas;
+    this.depto.serviciosPrincipales = this.data.serviciosPrincipales;
+    this.depto.serviciosDisponibles = this.data.serviciosDisponibles;
 
     this.loginService.getAuthData().subscribe(data => {
       this.user.id = data.id;
@@ -101,11 +109,12 @@ export class ArriendoComponent implements OnInit {
         label: 'paypal'
       },
       onClick: (data: any, actions: any) => {
-        if (this.form.invalid) {
-          return actions.reject()
-        } else {
-          this.arriendo.price = Math.round((this.deposito)/900)
+        if (this.arrendar_paypal()) {
+          this.arriendo.price = Math.round(this.deposito/900)
+          this.arriendo.img = this.depto.fotografias[0]
           return actions.resolve()
+        } else {
+          return actions.reject()
         }
       },
       createOrder: (data: any, actions: any ) => {
@@ -124,13 +133,24 @@ export class ArriendoComponent implements OnInit {
       onApprove: async (data: any, actions: any) => {
         const order = await actions.order.capture()
         console.log(order)
-        
+        this.snackBar.open("Departamento reservado exitosamente", 'Notificación', {duration: 10000,
+        horizontalPosition: 'right', verticalPosition: 'top'})
+        this.departamentoService.reservarDepartamento(this.factura).pipe(switchMap(()=>{
+          return this.departamentoService.listar()
+        })).subscribe((data:any) => {
+          this.departamentoService.setChange(data)
+        })
+        this.close()
       },
       onError: (err:any) => {
         console.log(err)
+        this.snackBar.open("Error durante la reserva, intente nuevamente.", 'Notificación', {duration: 10000,
+        horizontalPosition: 'right', verticalPosition: 'top'})
       }
     })
     .render(this.paypalElement.nativeElement);
+
+    this.factura.serviciosPorFactura = new Array<ServicioFactura>()
 
     this.cdr.detectChanges();
   }
@@ -163,9 +183,8 @@ export class ArriendoComponent implements OnInit {
     let date1 = new Date(this.form.controls['fechaCheckIn'].value)
     let date2 = new Date(this.form.controls['fechaCheckOut'].value)
     this.duracion = Math.floor((Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate()) - Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()) ) /(1000 * 60 * 60 * 24));
-    this.iva = this.depto.valorBase*this.duracion*0.19
-    this.deposito = (this.depto.valorBase*this.duracion+this.iva)*0.2
     this.cdr.detectChanges();
+    this.calc()
   }
 
   close() {
@@ -177,6 +196,50 @@ export class ArriendoComponent implements OnInit {
       return '#00C767'
     }
     return '#FF3434'
+  }
+
+  addService(svc: number, status: any) {
+    let sf = new ServicioFactura()
+    if (status.checked) {
+      sf.idServicio = this.depto.serviciosDisponibles[svc].idServicio
+      sf.servicio = this.depto.serviciosDisponibles[svc].servicio
+      sf.valorServicio = sf.servicio.servicioUnitario?(sf.servicio.costoServicio*this.form.controls['cantidadClientes'].value??1):(sf.servicio.costoServicio)
+      this.factura.serviciosPorFactura.push(sf)
+    } else {
+      sf = this.factura.serviciosPorFactura.find(x => {
+        return x.idServicio == this.depto.serviciosDisponibles[svc].idServicio
+      })??sf
+      this.factura.serviciosPorFactura.splice(this.factura.serviciosPorFactura.indexOf(sf), 1)
+    }
+    this.calc()
+  }
+
+  calc() {
+    this.servicios = 0
+    this.factura.serviciosPorFactura.forEach(x => {
+      x.valorServicio = x.servicio.servicioUnitario?(x.servicio.costoServicio*this.form.controls['cantidadClientes'].value??1):(x.servicio.costoServicio)
+      this.servicios += x.valorServicio
+    })
+    this.subtotal = (this.duracion*this.depto.valorBase)+this.servicios
+    this.iva = Math.round(this.subtotal*0.19)
+    this.total = this.subtotal+this.iva
+    this.deposito = Math.round(this.total*0.2)
+  }
+
+  arrendar_paypal(): boolean {
+    if (this.form.invalid) {return false;}
+    console.log('Iniciando arriendo de departamento')
+    this.factura.cantidadClientes = Number(this.form.controls['cantidadClientes'].value??1)
+    this.factura.valorIVA = this.iva
+    this.factura.valor = this.total
+    this.factura.valorDeposito = this.deposito
+    this.factura.valorServicios = this.servicios
+    this.factura.fechaHoraReserva = new Date(this.form.controls['fechaCheckIn'].value)
+    this.factura.duracion = this.duracion;
+    this.factura.estado = "Incompleta";
+    this.factura.departamento = this.depto
+    this.factura.usuario = this.user
+    return true
   }
   
   arrendar() {
