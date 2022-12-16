@@ -51,7 +51,7 @@ export class DeptosComponent implements OnInit {
   //@ts-ignore
   depto: Departamento;
 
-  displayedColumns = ['regionDepartamento', 'ubicacionDepartamento', 'valorBase', 'cantidadDormitorios', 'estado', 'estadoLogico', 'acciones']
+  displayedColumns = ['nombreDepartamento', 'regionDepartamento', 'ubicacionDepartamento', 'valorBase', 'cantidadDormitorios', 'estado', 'estadoLogico', 'acciones']
   dataSource!: MatTableDataSource<Departamento>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -64,6 +64,7 @@ export class DeptosComponent implements OnInit {
   detail(element: any) {
     this.depto = new Departamento();
     this.depto.idDepartamento = element.idDepartamento;
+    this.depto.nombreDepartamento = element.nombreDepartamento;
     this.depto.descripcionDepartamento = element.descripcionDepartamento;
     this.depto.ubicacionDepartamento = element.ubicacionDepartamento;
     this.depto.regionDepartamento = element.regionDepartamento;
@@ -94,6 +95,7 @@ export class DeptosComponent implements OnInit {
     console.log(element)
     this.depto = new Departamento();
     this.depto.idDepartamento = element.idDepartamento;
+    this.depto.nombreDepartamento = element.nombreDepartamento;
     this.depto.descripcionDepartamento = element.descripcionDepartamento;
     this.depto.ubicacionDepartamento = element.ubicacionDepartamento;
     this.depto.regionDepartamento = element.regionDepartamento;

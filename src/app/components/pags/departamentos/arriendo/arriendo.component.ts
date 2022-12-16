@@ -247,6 +247,9 @@ export class ArriendoComponent implements OnInit {
     console.log('Iniciando arriendo de departamento')
     this.factura.cantidadClientes = Number(this.form.controls['cantidadClientes'].value??1)
     this.factura.valorIVA = this.iva
+    this.factura.valor = this.total
+    this.factura.valorDeposito = this.deposito
+    this.factura.valorServicios = this.servicios
     this.factura.fechaHoraReserva = new Date(this.form.controls['fechaCheckIn'].value)
     this.factura.duracion = this.duracion;
     this.factura.estado = "Incompleta";

@@ -6,6 +6,7 @@ import { Usuario } from '../_models/usuario';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LoaderService } from '../_services/loader.service';
 
 @Component({
   selector: 'app-registro',
@@ -24,7 +25,8 @@ export class RegistroComponent implements OnInit {
     private registerService: RegisterService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    public loaderService: LoaderService
     ) { }
 
   ngOnInit(): void {

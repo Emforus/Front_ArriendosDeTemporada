@@ -94,6 +94,7 @@ export class DeptoEditComponent implements OnInit {
     if (this.data.idDepartamento != undefined) {
       this.editar = true
       this.depto.idDepartamento = this.data.idDepartamento
+      this.depto.nombreDepartamento = this.data.nombreDepartamento
       this.depto.descripcionDepartamento = this.data.descripcionDepartamento
       this.depto.ubicacionDepartamento = this.data.ubicacionDepartamento
       this.depto.regionDepartamento = this.data.regionDepartamento
@@ -131,7 +132,8 @@ export class DeptoEditComponent implements OnInit {
     this.depto.serviciosPrincipales = this.data.serviciosPrincipales??new ServicioGenerico()
     this.depto.utilidades = this.data.utilidades??new Array<Utilidad>()
     this.form = this.formBuilder.group({
-      ubicacion: [this.depto.ubicacionDepartamento??null, [Validators.required, Validators.maxLength(50), Validators.pattern('[a-zA-ZÀ-ÿ\u00f1\u00d10-9,-_.,°# ]*')]],
+      nombre: [this.depto.nombreDepartamento??null, [Validators.required, Validators.maxLength(40), Validators.pattern('[a-zA-ZÀ-ÿ\u00f1\u00d10-9_ ]*')]],
+      ubicacion: [this.depto.ubicacionDepartamento??null, [Validators.required, Validators.maxLength(40), Validators.pattern('[a-zA-ZÀ-ÿ\u00f1\u00d10-9,-_.,°# ]*')]],
       region: [this.depto.regionDepartamento??null, [Validators.required]],
       descripcion: [this.depto.descripcionDepartamento??null, [Validators.required, Validators.maxLength(200), Validators.pattern('[a-zA-ZÀ-ÿ\u00f1\u00d10-9,-_.,\' ]*')]],
       valorBase: [this.depto.valorBase??null, [Validators.required, Validators.pattern('[0-9]*')]],
@@ -271,9 +273,23 @@ export class DeptoEditComponent implements OnInit {
     u.estado = this.utilForm.controls['estado'].value
   }
 
+  uploadImage(event: Event) {
+    var target = event.target as HTMLInputElement;
+    this.depto.fotografias ??= new Array<string>()
+    if (target.files && target.files.length > 0) {
+      this.depto.fotografias.push(target.files[0].name)
+    }
+  }
+  removeImage() {
+    this.depto.fotografias.splice(this.selectedImage, 1)
+  }
+
   operar() {
     if (this.form.invalid) {return;}
-    this.parseData()
+    if (this.depto.fotografias == null || this.depto.fotografias.length == 0) {
+      this.depto.fotografias = new Array<string>()
+      this.depto.fotografias.push('NotFound.png')
+    }
     if (!this.editar) {
       console.log('Iniciando creacion de departamento')
       this.dialog.open(ConfirmDialogComponent, {
@@ -304,10 +320,6 @@ export class DeptoEditComponent implements OnInit {
         }
       })
     }
-  }
-
-  parseData() {
-
   }
   
   close() {

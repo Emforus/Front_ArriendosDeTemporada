@@ -87,6 +87,7 @@ mat-tab-group {
     min-width: 70%;
     max-width: 70%;
     width: 70%;
+    margin-left: 15%;
     max-height: 10vh;
     min-height: 10vh;
     height: 10vh;

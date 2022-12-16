@@ -74,6 +74,7 @@ import * as CanvasJSAngularChart from 'src/canvasjs.angular.component';
 import { ServiciosComponent } from './components/pags/admin/servicios/servicios.component';
 import { ServicioDetailComponent } from './components/pags/admin/servicios/servicio-detail/servicio-detail.component';
 import { ServicioEditComponent } from './components/pags/admin/servicios/servicio-edit/servicio-edit.component';
+import { EstadisticasDetalleDepartamentoComponent } from './components/pags/admin/estadisticas/estadisticas-detalle-departamento/estadisticas-detalle-departamento.component';
 var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
 
 @NgModule({
@@ -109,7 +110,8 @@ var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
     CheckoutComponent,
     ServiciosComponent,
     ServicioDetailComponent,
-    ServicioEditComponent
+    ServicioEditComponent,
+    EstadisticasDetalleDepartamentoComponent
   ],
   imports: [
     BrowserModule,

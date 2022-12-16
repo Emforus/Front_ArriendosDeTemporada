@@ -1,0 +1,43 @@
+<div class="spacer">
+</div>
+
+<div class="container">
+    <mat-card class="title-box mt-elevation-z2">
+        <h4 class="title" fxLayoutAlign="center center">Estadísticas</h4>
+    </mat-card> 
+    <div fxLayout="row" style="padding-bottom: 20px;" class="example-header" *ngIf="dialogOpen() && (loaderService.visibility | async)">
+        <mat-spinner style="margin: auto;" mode="indeterminate" [diameter]="100"></mat-spinner>
+    </div>
+    <div fxLayout="column"  style="margin-top: 20px;" [hidden]="dialogOpen() && (loaderService.visibility | async)">
+        <div fxLayout="column" fxFlex>
+            <div fxFlex style="display: inline-flex; margin-left: 10%;">
+                <canvasjs-chart [options]="ingresosDeptoMes"></canvasjs-chart>
+            </div>
+            <div fxFlex style="display: inline-flex; margin-top: 20px; margin-left: 25%;">
+                <canvasjs-chart [options]="ingresosServicios"></canvasjs-chart>
+            </div>
+        </div>
+        <div class="table" [hidden]="dialogOpen() && (loaderService.visibility | async)">
+            <mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="fecha">
+                    <mat-header-cell *matHeaderCellDef>Mes</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.fecha}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="arriendos">
+                    <mat-header-cell *matHeaderCellDef>Cantidad de arriendos </mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.arriendos}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="servicios">
+                    <mat-header-cell *matHeaderCellDef>Servicio extra más solicitado</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.servicios}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="ganancias">
+                    <mat-header-cell *matHeaderCellDef>Ganancias </mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{formatter.format(row.ingresoCompletadas)}}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumnsHistorica"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumnsHistorica"></mat-row>
+            </mat-table>
+        </div>
+    </div>
+</div>

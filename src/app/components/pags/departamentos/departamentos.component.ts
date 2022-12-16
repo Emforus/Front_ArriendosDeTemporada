@@ -38,6 +38,12 @@ export class DepartamentosComponent implements OnInit {
 
     this.deptoService.listar().subscribe(data => {
       this.departamentos = data;
+      this.departamentos.forEach((x:Departamento) => {
+        if (x.fotografias==null || x.fotografias.length==0) {
+          x.fotografias = new Array<string>()
+          x.fotografias.push('NotFound.png')
+        }
+      })
     })
   }
 

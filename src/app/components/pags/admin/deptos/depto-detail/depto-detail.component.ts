@@ -54,6 +54,7 @@ export class DeptoDetailComponent implements OnInit {
     ngOnInit(): void {
       this.depto = new Departamento();
       this.depto.idDepartamento = this.data.idDepartamento;
+      this.depto.nombreDepartamento = this.data.nombreDepartamento;
       this.depto.descripcionDepartamento = this.data.descripcionDepartamento;
       this.depto.ubicacionDepartamento = this.data.ubicacionDepartamento;
       this.depto.regionDepartamento = this.data.regionDepartamento;

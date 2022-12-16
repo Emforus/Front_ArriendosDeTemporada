@@ -14,6 +14,10 @@
         </div>
         <div class="table" [hidden]="dialogOpen() && (loaderService.visibility | async)">
             <mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="nombreDepartamento">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.nombreDepartamento}}</mat-cell>
+                </ng-container>
                 <ng-container matColumnDef="regionDepartamento">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Región</mat-header-cell>
                     <mat-cell *matCellDef="let row">{{row.regionDepartamento}}</mat-cell>

@@ -12,6 +12,8 @@ import { Factura } from 'src/app/components/_models/factura';
 import { EstadisticasDetalleMesComponent } from './estadisticas-detalle-mes/estadisticas-detalle-mes.component';
 import { ServicioFactura } from 'src/app/components/_models/join.servicio.factura';
 import * as CanvasJS from 'src/canvasjs.angular.component'
+import { ServicioExtra } from 'src/app/components/_models/servicio.extra';
+import { EstadisticasDetalleDepartamentoComponent } from './estadisticas-detalle-departamento/estadisticas-detalle-departamento.component';
 
 @Component({
   selector: 'app-estadisticas',
@@ -21,13 +23,16 @@ import * as CanvasJS from 'src/canvasjs.angular.component'
 export class EstadisticasComponent implements OnInit {
 
   displayedColumnsHistorica = [ 'fecha', 'arriendos', 'ganancias', 'servicios', 'acciones']
-  displayedColumns = [ 'id', 'valor', 'valorServicios', 'arriendos', 'cancelaciones']
+  displayedColumns = [ 'nombre', 'valor', 'servicioPopular', 'valorServicios', 'arriendos', 'cancelaciones']
   dataSource!: MatTableDataSource<any>;
   dataHistorica!: MatTableDataSource<any>;
+  dataDepartamentos!: MatTableDataSource<any>;
   infoHistorico: any[] = new Array()
+  infoHistoricoPorDepto: any[] = new Array()
   infoMes: {} = {}
   infoMesPorDepto: any[] = new Array()
   numArriendos: number = 0
+  now: Date = new Date()
 
   chartOptions = {
     title: {
@@ -122,56 +127,75 @@ export class EstadisticasComponent implements OnInit {
       }
       let deptos: {[key:number]:{
         id: number,
+        nombre: string, 
         valor: number,
         valorServicios:number,
         arriendos:number,
         cancelaciones:number,
-        servicioPopular: {[key:number]:number}
+        servicioPopular: {[key:number]:number},
+        servicioMasPopular: ServicioExtra
       }} = {}
       for (let item of data) {
         item.serviciosPorFactura ??= new Array<ServicioFactura>()
         this._ajustarValor(item)
-        let _now = new Date()
         let fecha = new Date(item.fechaHoraReserva)
-        if (_now.getMonth() == fecha.getMonth()) {
+        if (this.now.getMonth() == fecha.getMonth()) {
+          console.log('fecha factura: '+ item.fechaHoraReserva)
+          console.log('fecha actual: '+ this.meses[this.now.getMonth()])
           info.arriendos ++
           if (deptos[item.departamento.idDepartamento]===undefined) {
             deptos[item.departamento.idDepartamento] = {            
               id: item.departamento.idDepartamento,
+              nombre: item.departamento.nombreDepartamento,
               valor: item.valor,
               valorServicios: item.valorServicios,
               arriendos: 0,
               cancelaciones:0,
-              servicioPopular: {}
+              servicioPopular: {},
+              servicioMasPopular: new ServicioExtra()
             }
             deptos[item.departamento.idDepartamento].id = item.departamento.idDepartamento
+            deptos[item.departamento.idDepartamento].nombre = item.departamento.nombreDepartamento
             deptos[item.departamento.idDepartamento].valor = item.valor
             deptos[item.departamento.idDepartamento].valorServicios = item.valorServicios
-            deptos[item.departamento.idDepartamento].arriendos = 1
-            if (item.estado == "Cancelada") {
-              deptos[item.departamento.idDepartamento].cancelaciones = 1
-            } else {
-              deptos[item.departamento.idDepartamento].cancelaciones = 0
-            }
+            deptos[item.departamento.idDepartamento].arriendos = (item.estado == "Completada")?1:0
+            deptos[item.departamento.idDepartamento].cancelaciones = (item.estado == "Cancelada")?1:0
+
+            let _maxValue = -1
+            let _maxSvc = new ServicioExtra()
             item.serviciosPorFactura.forEach(function(e) {
               if (deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio]===undefined) {
                 deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio] = 0
               }
               deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio] += 1
+              if (deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio] > _maxValue) {
+                _maxValue = deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio]
+                _maxSvc = e.servicio
+              }
             })
+            deptos[item.departamento.idDepartamento].servicioMasPopular = _maxSvc
           } else {
             deptos[item.departamento.idDepartamento].valor += item.valor
             deptos[item.departamento.idDepartamento].valorServicios += item.valorServicios
-            deptos[item.departamento.idDepartamento].arriendos += 1
+            if (item.estado == "Completada") {
+              deptos[item.departamento.idDepartamento].arriendos += 1
+            }
             if (item.estado == "Cancelada") {
               deptos[item.departamento.idDepartamento].cancelaciones += 1
             }
+            let _maxValue = -1
+            let _maxSvc = new ServicioExtra()
             item.serviciosPorFactura.forEach(function(e) {
               if (deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio]===undefined) {
                 deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio] = 0
               }
               deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio] += 1
+              if (deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio] > _maxValue) {
+                _maxValue = deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio]
+                _maxSvc = e.servicio
+              }
             })
+            deptos[item.departamento.idDepartamento].servicioMasPopular = _maxSvc
           }
           if (item.estado == "Cancelada") {
             info.cancelados++
@@ -194,7 +218,7 @@ export class EstadisticasComponent implements OnInit {
       this.infoMes = info
       for (let id in deptos) {
         let value = deptos[id]
-        this.ingresosDeptoMes.data[0].dataPoints.push({ label: id,  y: value.valor  })
+        this.ingresosDeptoMes.data[0].dataPoints.push({ label: deptos[id].nombre,  y: value.valor  })
         this.infoMesPorDepto.push(value)
       }
       this.ingresosDeptoMes = {
@@ -206,9 +230,19 @@ export class EstadisticasComponent implements OnInit {
           dataPoints: this.ingresosDeptoMes.data[0].dataPoints
         }]	  
       };
-      this.estadoReservasMes.data[0].dataPoints.push({label: 'Reservas completadas', y: info.completados })
-      this.estadoReservasMes.data[0].dataPoints.push({label: 'Reservas canceladas', y: info.cancelados })
-      this.estadoReservasMes.data[0].dataPoints.push({label: 'Reservas pendientes', y: info.arriendos-info.completados-info.cancelados })
+
+      if (info.completados>0) {
+        this.estadoReservasMes.data[0].dataPoints.push({label: 'Reservas completadas: '+info.completados, y: info.completados })
+      }
+
+      if (info.cancelados>0) {
+        this.estadoReservasMes.data[0].dataPoints.push({label: 'Reservas canceladas: '+ info.cancelados, y: info.cancelados })
+      }
+
+      if (info.arriendos-info.completados-info.cancelados>0) {
+        this.estadoReservasMes.data[0].dataPoints.push({label: 'Reservas pendientes: '+(info.arriendos-info.completados-info.cancelados), y: info.arriendos-info.completados-info.cancelados })
+      }
+      
       this.estadoReservasMes = {
         title: {
           text: "Estado actual de reservas del mes"
@@ -225,6 +259,18 @@ export class EstadisticasComponent implements OnInit {
 
   loadHistorico() {
     this.bookingService.listar().subscribe(data => {
+      let deptos: {[key:number]:{
+        id: number,
+        nombre: string, 
+        valor: number,
+        valorServicios:number,
+        arriendos:number,
+        cancelaciones:number,
+        servicioPopular: {[key:number]:number},
+        servicioMasPopular: ServicioExtra
+      }} = {}
+      let _maxValue = -1
+      let _maxSvc = new ServicioExtra()
       for (let mes =1; mes<=12;mes++) {
         let info = {
           fecha: this.meses[mes],
@@ -238,8 +284,11 @@ export class EstadisticasComponent implements OnInit {
           servicios:""
         }
         for (let item of data) {
+
+          item.serviciosPorFactura ??= new Array<ServicioFactura>()
           this._ajustarValor(item)
           let fecha = new Date(item.fechaHoraReserva)
+
           if (mes == fecha.getMonth()+1) {
             info.arriendos ++
             if (item.estado == "Cancelada") {
@@ -248,11 +297,72 @@ export class EstadisticasComponent implements OnInit {
               info.ganancias += item.valor
               info.ingresoCompletadas += item.valor
             }
-            /* info.servicios  */
+            
+            if (deptos[item.departamento.idDepartamento]===undefined) {
+              deptos[item.departamento.idDepartamento] = {            
+                id: item.departamento.idDepartamento,
+                nombre: item.departamento.nombreDepartamento,
+                valor: item.valor,
+                valorServicios: item.valorServicios,
+                arriendos: 0,
+                cancelaciones:0,
+                servicioPopular: {},
+                servicioMasPopular: new ServicioExtra()
+              }
+              deptos[item.departamento.idDepartamento].id = item.departamento.idDepartamento
+              deptos[item.departamento.idDepartamento].nombre = item.departamento.nombreDepartamento
+              deptos[item.departamento.idDepartamento].valor = item.valor
+              deptos[item.departamento.idDepartamento].valorServicios = item.valorServicios
+              deptos[item.departamento.idDepartamento].arriendos = (item.estado == "Completada")?1:0
+              deptos[item.departamento.idDepartamento].cancelaciones = (item.estado == "Cancelada")?1:0
+  
+              item.serviciosPorFactura.forEach(function(e) {
+                if (deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio]===undefined) {
+                  deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio] = 0
+                }
+                deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio] += 1
+                if (deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio] > _maxValue) {
+                  _maxValue = deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio]
+                  _maxSvc = e.servicio
+                }
+              })
+              deptos[item.departamento.idDepartamento].servicioMasPopular = _maxSvc
+              _maxValue = -1
+              _maxSvc = new ServicioExtra()
+            } else {
+              deptos[item.departamento.idDepartamento].valor += item.valor
+              deptos[item.departamento.idDepartamento].valorServicios += item.valorServicios
+              if (item.estado == "Completada") {
+                deptos[item.departamento.idDepartamento].arriendos += 1
+              }
+              deptos[item.departamento.idDepartamento].arriendos += 1
+              if (item.estado == "Cancelada") {
+                deptos[item.departamento.idDepartamento].cancelaciones += 1
+              }
+              item.serviciosPorFactura.forEach(function(e) {
+                if (deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio]===undefined) {
+                  deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio] = 0
+                }
+                deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio] += 1
+                if (deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio] > _maxValue) {
+                  _maxValue = deptos[item.departamento.idDepartamento].servicioPopular[e.idServicio]
+                  _maxSvc = e.servicio
+                }
+              })
+              deptos[item.departamento.idDepartamento].servicioMasPopular = _maxSvc
+              _maxValue = -1
+              _maxSvc = new ServicioExtra()
+            }
           }
         }
         this.infoHistorico.push(info)
       }
+      for (let id in deptos) {
+        let value = deptos[id]
+        // this.ingresosDeptoMes.data[0].dataPoints.push({ label: deptos[id].nombre,  y: value.valor  })
+        this.infoHistoricoPorDepto.push(value)
+      }
+      this.dataDepartamentos = new MatTableDataSource(this.infoHistoricoPorDepto)
       this.dataHistorica = new MatTableDataSource(this.infoHistorico)
       this.dataHistorica.sort = this.sort2
       this.dataHistorica.paginator = this.paginator2
@@ -270,6 +380,15 @@ export class EstadisticasComponent implements OnInit {
       width: '60%',
       autoFocus: false,
       data: mes
+    })
+  }
+
+  detalleDepto(depto: any) {
+    this.dialog.open(EstadisticasDetalleDepartamentoComponent, {
+      height: '95%',
+      width: '60%',
+      autoFocus: false,
+      data: depto
     })
   }
 

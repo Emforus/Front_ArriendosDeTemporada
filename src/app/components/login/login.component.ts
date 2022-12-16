@@ -25,7 +25,8 @@ export class LoginComponent implements OnInit {
     private loginService: LoginService,
     private userService: UserService,
     private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    public loaderService: LoaderService
     ) { }
 
   ngOnInit(): void {

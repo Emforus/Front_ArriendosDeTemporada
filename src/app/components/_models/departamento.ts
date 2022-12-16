@@ -5,6 +5,7 @@ import { ServicioGenerico } from "./servicio.generico";
 import { ServicioDepartamento } from "./join.servicio.departamento";
 export class Departamento {
     idDepartamento: number;
+    nombreDepartamento: string;
     ubicacionDepartamento: string;
     regionDepartamento: string;
     valorBase: number;

@@ -12,8 +12,13 @@
                 <form [formGroup]="form">
                     <div class="form-container">
                         <mat-form-field style="margin-top: 30px;">
+                            <mat-label>Nombre</mat-label>
+                            <input formControlName="nombre" [(ngModel)]="depto.nombreDepartamento" matInput placeholder="Nombre">
+                            <mat-error>{{hasError(form, 'nombre')?.error}}</mat-error>
+                        </mat-form-field>
+                        <mat-form-field style="margin-top: 10px;">
                             <mat-label>Ubicación</mat-label>
-                            <input formControlName="ubicacion" [(ngModel)]="depto.ubicacionDepartamento" matInput placeholder="Nombre de usuario">
+                            <input formControlName="ubicacion" [(ngModel)]="depto.ubicacionDepartamento" matInput placeholder="Ubicación">
                             <mat-error>{{hasError(form, 'ubicacion')?.error}}</mat-error>
                         </mat-form-field>
                         <mat-form-field style="margin-top: 10px;">
@@ -197,20 +202,28 @@
                 </div>
             </mat-tab>
             <mat-tab label="Fotografias">
-                <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutAlign="center ">
+                <div fxLayout.gt-sm="row" fxLayout.lt-md="column" fxLayoutAlign="center " style="margin-top:30px;">
                     <div fxFlex="30" fxLayout.gt-sm="row wrap" fxLayout.lt-md="column" fxLayoutGap="5px">
                         <ng-container *ngFor="let f of depto.fotografias; index as i">
                             <div [id]="f" class="imgcontainer" [class.selected]="isSelected(i)" (click)="selectedImage=i">
                                 <img [src]="'assets/img/deptos/'+depto.fotografias[i]" alt=""/>
                             </div>
                         </ng-container>
+                        <div class="imgcontainer" fxLayout="column" fxLayoutAlign="center center">
+                            <img src="assets/img/deptos/Add.png" alt="" style="height: 65%; width: auto;"/>
+                            <button type="button" mat-raised-button (click)="fileInput.click()">Subir archivo</button>
+                            <input hidden #fileInput (change)="uploadImage($event)" type="file" id="file">
+                        </div>
                     </div>
                     <div fxFlex="70" fxLayout="column" fxLayoutAlign="center stretch">
                         <ng-container *ngIf="selectedImage>=0">
-                            <div class="imgfocused" fxFlex="90" fxLayout="row" fxLayoutAlign="center start">
+                            <div class="imgfocused" fxFlex="80" fxLayout="column" fxLayoutAlign="center start">
                                 <img [src]="'assets/img/deptos/'+depto.fotografias[selectedImage]" class="imgfluid" alt=""/>
                             </div>
-                            <div fxFlex="5" fxLayout="row" fxLayoutAlign="center ">
+                            <div fxFlex="15">
+                                <button (click)="removeImage()" mat-raised-button class="button" style="background-color: #990000; color: white; width: 70%; margin-left: 15%;">
+                                    <mat-icon>remove_circle_outline</mat-icon>
+                                </button>
                             </div>
                         </ng-container>
                     </div>
